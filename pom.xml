@@ -28,12 +28,6 @@
         </dependency>
         <dependency>
             <groupId>eu.okaeri</groupId>
-            <artifactId>okaeri-commons-core</artifactId>
-            <version>0.1.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.okaeri</groupId>
             <artifactId>okaeri-configs-hjson</artifactId>
             <version>3.2.0</version>
             <scope>compile</scope>
