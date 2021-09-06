@@ -22,6 +22,6 @@ public class PingCommand extends Command {
             .setAuthor(event.getMessageAuthor()))
             .thenAccept(sentMessage -> sentMessage.edit(EmbedFactory.produce()
                 .setDescription("Pong! :ping_pong: Aktualnie opóźnienie wynosi " + (System.currentTimeMillis() - measurementStart) + " milisekund.")
-                .setAuthor(event.getMessageAuthor())));
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
     }
 }

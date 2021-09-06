@@ -17,7 +17,7 @@ public class AnalysisCommand extends Command {
     private final CensorService censorService;
 
     public AnalysisCommand(CensorService censorService) {
-        super("analysis", "Wyświetla {x} ostatnich analiz.", "<prefix>analysis [optional:<identifier>]");
+        super("analysis", "Wyświetla 5 ostatnich analiz, które zostały oznaczone jako wulgarne.", "<prefix>analysis [optional:<identifier>]");
         this.censorService = censorService;
     }
 
@@ -32,8 +32,7 @@ public class AnalysisCommand extends Command {
 
             EmbedBuilder embedBuilder = EmbedFactory.produce()
                 .setDescription("Poniżej znajduje się lista ostatnich analiz w których wykryto wulgarną wypowiedź. \n\nAby wyświetlić dokładne informacje na temat z jednej nich użyj komendy **!analysis <id>**")
-                .setAuthor(event.getMessageAuthor());
-
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar());
             for (CensorAnalysis analyse : censorService.getAnalyses()) {
                 embedBuilder.addInlineField("Unikalny identyfikator", analyse.getUniqueId().toString());
                 embedBuilder.addInlineField("Podmiot", "<@" + analyse.getEntity() + ">");
@@ -54,7 +53,7 @@ public class AnalysisCommand extends Command {
 
         textChannel.sendMessage(EmbedFactory.produce()
             .setDescription("Poniżej znajdują się informacje dotyczące analizy o identyfikatorze **" + censorAnalysis.getUniqueId() + "**.")
-            .setAuthor(event.getMessageAuthor())
+            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())
             .addField("Unikalny identyfikator", censorAnalysis.getUniqueId().toString())
             .addField("Wiadomość", censorAnalysis.getSample())
             .addField("Podmiot", "<@" + censorAnalysis.getEntity() + ">")
