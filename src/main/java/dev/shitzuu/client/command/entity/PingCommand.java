@@ -1,6 +1,7 @@
 package dev.shitzuu.client.command.entity;
 
 import dev.shitzuu.client.command.Command;
+import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,14 @@ public class PingCommand extends Command {
 
     @Override
     public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+        long measurementStart = System.currentTimeMillis();
+
         TextChannel textChannel = event.getChannel();
-        textChannel.sendMessage(":ping_pong: Pong!");
+        textChannel.sendMessage(EmbedFactory.produce()
+            .setDescription("Trwa odbijanie piłeczki... :ping_pong:")
+            .setAuthor(event.getMessageAuthor()))
+            .thenAccept(sentMessage -> sentMessage.edit(EmbedFactory.produce()
+                .setDescription("Pong! :ping_pong: Aktualnie opóźnienie wynosi " + (System.currentTimeMillis() - measurementStart) + " milisekund.")
+                .setAuthor(event.getMessageAuthor())));
     }
 }

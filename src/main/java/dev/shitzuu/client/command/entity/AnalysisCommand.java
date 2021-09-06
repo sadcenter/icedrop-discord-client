@@ -3,7 +3,9 @@ package dev.shitzuu.client.command.entity;
 import dev.shitzuu.client.censor.CensorService;
 import dev.shitzuu.client.censor.domain.CensorAnalysis;
 import dev.shitzuu.client.command.Command;
+import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,23 +30,17 @@ public class AnalysisCommand extends Command {
                 return;
             }
 
-            StringBuilder stringBuilder = new StringBuilder("Poniżej znajdują się identyfikatory ostatnich analiz, wybierz jedną oraz wyświetl szczegółowe informacje używając [<prefix>analysis <uuid>]");
-            stringBuilder.append("\n");
-            for (int index = 0; index < censorService.getAnalyses().size(); index++) {
-                CensorAnalysis censorAnalysis = censorService.getAnalyses().get(index);
-                stringBuilder
-                    .append("**")
-                    .append("#")
-                    .append(index)
-                    .append("** (")
-                    .append(censorAnalysis.getUniqueId())
-                    .append(")")
-                    .append(" - probability: ")
-                    .append(censorAnalysis.getProbability())
-                    .append("\n");
+            EmbedBuilder embedBuilder = EmbedFactory.produce()
+                .setDescription("Poniżej znajduje się lista ostatnich analiz w których wykryto wulgarną wypowiedź. \n\nAby wyświetlić dokładne informacje na temat z jednej nich użyj komendy **!analysis <id>**")
+                .setAuthor(event.getMessageAuthor());
+
+            for (CensorAnalysis analyse : censorService.getAnalyses()) {
+                embedBuilder.addInlineField("Unikalny identyfikator", analyse.getUniqueId().toString());
+                embedBuilder.addInlineField("Podmiot", "<@" + analyse.getEntity() + ">");
+                embedBuilder.addInlineField("Prawdopodobieństwo", String.valueOf(analyse.getProbability()));
             }
 
-            textChannel.sendMessage(stringBuilder.toString());
+            textChannel.sendMessage(embedBuilder);
             return;
         }
 
@@ -54,6 +50,15 @@ public class AnalysisCommand extends Command {
             return;
         }
 
-        textChannel.sendMessage(optionalAnalyse.get().toString());
+        CensorAnalysis censorAnalysis = optionalAnalyse.get();
+
+        textChannel.sendMessage(EmbedFactory.produce()
+            .setDescription("Poniżej znajdują się informacje dotyczące analizy o identyfikatorze **" + censorAnalysis.getUniqueId() + "**.")
+            .setAuthor(event.getMessageAuthor())
+            .addField("Unikalny identyfikator", censorAnalysis.getUniqueId().toString())
+            .addField("Wiadomość", censorAnalysis.getSample())
+            .addField("Podmiot", "<@" + censorAnalysis.getEntity() + ">")
+            .addField("Prawdopodobieństwo", String.valueOf(censorAnalysis.getProbability()))
+            .addField("Czas trwania analizy", censorAnalysis.getStatistics().getElapsedProcessing() + "ms"));
     }
 }
