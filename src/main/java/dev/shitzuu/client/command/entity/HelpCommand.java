@@ -22,8 +22,8 @@ public class HelpCommand extends Command {
     @Override
     public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
         EmbedBuilder embedBuilder = EmbedFactory.produce()
-            .setDescription("Poniżej znajdziesz spis dostępnych komend:")
-            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar());
+                .setDescription("Poniżej znajdziesz spis dostępnych komend:")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar());
         for (Command command : commandService.getCommands()) {
             if (command.equals(this)) {
                 continue;

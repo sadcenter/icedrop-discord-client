@@ -31,8 +31,8 @@ public class PollCommand extends Command {
         }
 
         textChannel.sendMessage(EmbedFactory.produce()
-                .setDescription("**Ankieta**\n" + String.join(" ", arguments))
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()))
+                        .setDescription("**Ankieta**\n" + String.join(" ", arguments))
+                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()))
                 .thenAccept(sentMessage -> {
                     DiscordApi discordApi = event.getApi();
 

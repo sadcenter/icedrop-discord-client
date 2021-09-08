@@ -18,10 +18,10 @@ public class PingCommand extends Command {
 
         TextChannel textChannel = event.getChannel();
         textChannel.sendMessage(EmbedFactory.produce()
-            .setDescription("Trwa odbijanie piłeczki... :ping_pong:")
-            .setAuthor(event.getMessageAuthor()))
-            .thenAccept(sentMessage -> sentMessage.edit(EmbedFactory.produce()
-                .setDescription("Pong! :ping_pong: Aktualnie opóźnienie wynosi " + (System.currentTimeMillis() - measurementStart) + " milisekund.")
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
+                        .setDescription("Trwa odbijanie piłeczki... :ping_pong:")
+                        .setAuthor(event.getMessageAuthor()))
+                .thenAccept(sentMessage -> sentMessage.edit(EmbedFactory.produce()
+                        .setDescription("Pong! :ping_pong: Aktualnie opóźnienie wynosi " + (System.currentTimeMillis() - measurementStart) + " milisekund.")
+                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
     }
 }

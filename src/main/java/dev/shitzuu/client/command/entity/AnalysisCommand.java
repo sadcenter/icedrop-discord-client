@@ -31,8 +31,8 @@ public class AnalysisCommand extends Command {
             }
 
             EmbedBuilder embedBuilder = EmbedFactory.produce()
-                .setDescription("Poniżej znajduje się lista ostatnich analiz w których wykryto wulgarną wypowiedź. \n\nAby wyświetlić dokładne informacje na temat z jednej nich użyj komendy **!analysis <id>**")
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar());
+                    .setDescription("Poniżej znajduje się lista ostatnich analiz w których wykryto wulgarną wypowiedź. \n\nAby wyświetlić dokładne informacje na temat z jednej nich użyj komendy **!analysis <id>**")
+                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar());
             for (CensorAnalysis analyse : censorService.getAnalyses()) {
                 embedBuilder.addInlineField("Unikalny identyfikator", analyse.getUniqueId().toString());
                 embedBuilder.addInlineField("Podmiot", "<@" + analyse.getEntity() + ">");
@@ -52,12 +52,12 @@ public class AnalysisCommand extends Command {
         CensorAnalysis censorAnalysis = optionalAnalyse.get();
 
         textChannel.sendMessage(EmbedFactory.produce()
-            .setDescription("Poniżej znajdują się informacje dotyczące analizy o identyfikatorze **" + censorAnalysis.getUniqueId() + "**.")
-            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())
-            .addField("Unikalny identyfikator", censorAnalysis.getUniqueId().toString())
-            .addField("Wiadomość", censorAnalysis.getSample())
-            .addField("Podmiot", "<@" + censorAnalysis.getEntity() + ">")
-            .addField("Prawdopodobieństwo", String.valueOf(censorAnalysis.getProbability()))
-            .addField("Czas trwania analizy", censorAnalysis.getStatistics().getElapsedProcessing() + "ms"));
+                .setDescription("Poniżej znajdują się informacje dotyczące analizy o identyfikatorze **" + censorAnalysis.getUniqueId() + "**.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())
+                .addField("Unikalny identyfikator", censorAnalysis.getUniqueId().toString())
+                .addField("Wiadomość", censorAnalysis.getSample())
+                .addField("Podmiot", "<@" + censorAnalysis.getEntity() + ">")
+                .addField("Prawdopodobieństwo", String.valueOf(censorAnalysis.getProbability()))
+                .addField("Czas trwania analizy", censorAnalysis.getStatistics().getElapsedProcessing() + "ms"));
     }
 }

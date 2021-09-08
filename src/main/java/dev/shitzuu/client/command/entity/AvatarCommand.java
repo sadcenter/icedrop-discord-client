@@ -32,8 +32,9 @@ public class AvatarCommand extends Command {
 
         TextChannel textChannel = event.getChannel();
         textChannel.sendMessage(EmbedFactory.produce()
-            .setImage(target.getAvatar())
-            .setDescription("Avatar użytkownika <@" + target.getId() + ">")
-            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setThumbnail("")
+                .setImage(target.getAvatar())
+                .setDescription("Avatar użytkownika <@" + target.getId() + ">")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
     }
 }

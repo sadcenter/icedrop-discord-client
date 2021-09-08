@@ -23,6 +23,7 @@ public class CommandService {
         this.commands.add(new BanCommand());
         this.commands.add(new UnbanCommand());
         this.commands.add(new PollCommand(pollConfig));
+        this.commands.add(new SayCommand());
         if (censorConfig.isEnabled()) {
             this.commands.add(new AnalysisCommand(censorService));
         }

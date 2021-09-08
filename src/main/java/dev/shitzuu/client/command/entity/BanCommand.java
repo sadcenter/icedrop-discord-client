@@ -33,16 +33,16 @@ public class BanCommand extends Command {
         Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
         if (optionalAuthor.isPresent() && !(server.hasAnyPermission(optionalAuthor.get(), PermissionType.ADMINISTRATOR, PermissionType.BAN_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
-                .setDescription("Nie posiadasz uprawnień do blokowania użytkowników.")
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                    .setDescription("Nie posiadasz uprawnień do blokowania użytkowników.")
+                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         Optional<User> optionalUser = UserUtil.extractUser(event.getMessage(), arguments);
         if (optionalUser.isEmpty()) {
             textChannel.sendMessage(EmbedFactory.produce()
-                .setDescription("Nie wskazałeś użytkownika, który powinien zostać zablokowany.")
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                    .setDescription("Nie wskazałeś użytkownika, który powinien zostać zablokowany.")
+                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
@@ -50,8 +50,8 @@ public class BanCommand extends Command {
 
         if (server.hasPermission(user, PermissionType.ADMINISTRATOR)) {
             textChannel.sendMessage(EmbedFactory.produce()
-                .setDescription("Nie możesz zablokować <@" + user.getId() + ">, ponieważ posiada on uprawnienia Administratora.")
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                    .setDescription("Nie możesz zablokować <@" + user.getId() + ">, ponieważ posiada on uprawnienia Administratora.")
+                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
@@ -59,13 +59,13 @@ public class BanCommand extends Command {
         String reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
 
         server.banUser(user, 7, reason.isEmpty()
-            ? null
-            : reason);
+                ? null
+                : reason);
 
         textChannel.sendMessage(EmbedFactory.produce()
-            .setDescription("Użytkownik **" + user.getDiscriminatedName() + "** został zablokowany na serwerze" + (reason.isEmpty()
-                ? "."
-                : " z powodem " + reason + "."))
-            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setDescription("Użytkownik **" + user.getDiscriminatedName() + "** został zablokowany na serwerze" + (reason.isEmpty()
+                        ? "."
+                        : " z powodem " + reason + "."))
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
     }
 }
