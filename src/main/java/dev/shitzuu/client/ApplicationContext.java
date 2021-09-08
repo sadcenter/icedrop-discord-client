@@ -5,6 +5,7 @@ import dev.shitzuu.client.command.CommandService;
 import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.factory.ConfigFactory;
+import dev.shitzuu.client.listener.MessageAdvertiseListener;
 import dev.shitzuu.client.listener.internal.CommandExecutionListener;
 import dev.shitzuu.client.listener.MessageSwearListener;
 import org.javacord.api.DiscordApi;
@@ -35,5 +36,6 @@ public class ApplicationContext {
         }
 
         discordApi.addMessageCreateListener(new CommandExecutionListener(new CommandService(primaryConfig.getCensorConfig(), censorService)));
+        discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig));
     }
 }

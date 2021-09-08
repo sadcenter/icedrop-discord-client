@@ -5,6 +5,9 @@ import eu.okaeri.configs.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Getter
 @Setter
 
@@ -19,6 +22,12 @@ public class PrimaryConfig extends OkaeriConfig {
 
     @Comment("This should be the token to your Discord's application.")
     private String token = "This value should be set on your own. ^-^";
+
+    @Comment("This should be the list of domains, which should be mark as advertisement.")
+    private List<String> advertisingDomains = Arrays.asList(
+            "discord.com",
+            "discord.gg"
+    );
 
     @Comment("CensorConfig - this section contains values related with okaeri's ai-censor product.")
     private CensorConfig censorConfig = new CensorConfig();

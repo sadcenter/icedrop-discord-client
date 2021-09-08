@@ -20,6 +20,7 @@ public class CommandService {
         this.commands.add(new AvatarCommand());
         this.commands.add(new KickCommand());
         this.commands.add(new BanCommand());
+        this.commands.add(new UnbanCommand());
         if (censorConfig.isEnabled()) {
             this.commands.add(new AnalysisCommand(censorService));
         }
