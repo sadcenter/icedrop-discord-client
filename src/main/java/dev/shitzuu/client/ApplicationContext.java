@@ -35,7 +35,7 @@ public class ApplicationContext {
             discordApi.addMessageCreateListener(new MessageSwearListener(censorService));
         }
 
-        discordApi.addMessageCreateListener(new CommandExecutionListener(new CommandService(primaryConfig.getCensorConfig(), censorService)));
+        discordApi.addMessageCreateListener(new CommandExecutionListener(new CommandService(primaryConfig.getPollConfig(), primaryConfig.getCensorConfig(), censorService)));
         discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig));
     }
 }

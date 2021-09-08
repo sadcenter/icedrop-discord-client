@@ -29,6 +29,20 @@ public class PrimaryConfig extends OkaeriConfig {
             "discord.gg"
     );
 
+    @Comment("PollConfig - this section contains values related with pool creation process.")
+    private PollConfig pollConfig = new PollConfig();
+
+    @Getter
+    @Setter
+    public static class PollConfig extends OkaeriConfig {
+
+        @Comment("This should be the snowflake of yes emoji.")
+        public String yesEmojiSnowflake = "885232455496396850";
+
+        @Comment("This should be the snowflake of no emoji.")
+        public String noEmojiSnowflake = "885232342472482846";
+    }
+
     @Comment("CensorConfig - this section contains values related with okaeri's ai-censor product.")
     private CensorConfig censorConfig = new CensorConfig();
 

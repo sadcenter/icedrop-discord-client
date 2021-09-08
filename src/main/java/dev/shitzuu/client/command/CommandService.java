@@ -2,6 +2,7 @@ package dev.shitzuu.client.command;
 
 import dev.shitzuu.client.censor.CensorService;
 import dev.shitzuu.client.command.entity.*;
+import dev.shitzuu.client.config.PrimaryConfig.PollConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 
 import java.util.HashSet;
@@ -12,7 +13,7 @@ public class CommandService {
 
     private final Set<Command> commands;
 
-    public CommandService(CensorConfig censorConfig, CensorService censorService) {
+    public CommandService(PollConfig pollConfig, CensorConfig censorConfig, CensorService censorService) {
         this.commands = new HashSet<>();
         this.commands.add(new HelpCommand(this));
         this.commands.add(new PingCommand());
@@ -21,6 +22,7 @@ public class CommandService {
         this.commands.add(new KickCommand());
         this.commands.add(new BanCommand());
         this.commands.add(new UnbanCommand());
+        this.commands.add(new PollCommand(pollConfig));
         if (censorConfig.isEnabled()) {
             this.commands.add(new AnalysisCommand(censorService));
         }
