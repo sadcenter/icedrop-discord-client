@@ -31,18 +31,18 @@ public class SayCommand extends Command {
         TextChannel textChannel = event.getChannel();
         if (arguments.length < 2) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Ogłoszenie")
-                    .setDescription("Aby użyć tej komendy musisz wskazać kanał na którym ma zostać wysłana wiadomość jak i jej treść.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Ogłoszenie")
+                .setDescription("Aby użyć tej komendy musisz wskazać kanał na którym ma zostać wysłana wiadomość jak i jej treść.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         Optional<ServerTextChannel> optionalChannel = event.getApi().getServerTextChannelById(arguments[0]);
         if (optionalChannel.isEmpty()) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Ogłoszenie")
-                    .setDescription("Kanał na który próbujesz wysłać wiadomość nie został odnaleziony, bądź jest on nieprawidłowy.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Ogłoszenie")
+                .setDescription("Kanał na który próbujesz wysłać wiadomość nie został odnaleziony, bądź jest on nieprawidłowy.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
@@ -51,15 +51,15 @@ public class SayCommand extends Command {
         Server server = serverTextChannel.getServer();
         if (!(server.hasPermission(user, PermissionType.ADMINISTRATOR))) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Ogłoszenie")
-                    .setDescription("Nie posiadasz wystarczających uprawnień aby wysłać wiadomość na ten kanał.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Ogłoszenie")
+                .setDescription("Nie posiadasz wystarczających uprawnień aby wysłać wiadomość na ten kanał.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         serverTextChannel.sendMessage(EmbedFactory.produce()
-                .setTitle("ICEDROP.EU - Ogłoszenie")
-                .setDescription(String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length)))
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+            .setTitle("ICEDROP.EU - Ogłoszenie")
+            .setDescription(String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length)))
+            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
     }
 }

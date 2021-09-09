@@ -45,10 +45,10 @@ public abstract class Command {
     @Override
     public String toString() {
         return "Command{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", syntax='" + syntax + '\'' +
-                ", aliases=" + aliases +
-                '}';
+            "name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", syntax='" + syntax + '\'' +
+            ", aliases=" + aliases +
+            '}';
     }
 }

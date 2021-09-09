@@ -21,8 +21,8 @@ public class CensorAnalysisStatistics {
     @Override
     public String toString() {
         return "CensorAnalysisStatistics{" +
-                "elapsedAll=" + elapsedAll +
-                ", elapsedProcessing=" + elapsedProcessing +
-                '}';
+            "elapsedAll=" + elapsedAll +
+            ", elapsedProcessing=" + elapsedProcessing +
+            '}';
     }
 }

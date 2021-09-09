@@ -5,6 +5,7 @@ import dev.shitzuu.client.command.CommandService;
 import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.factory.ConfigFactory;
+import dev.shitzuu.client.database.DatabaseConnector;
 import dev.shitzuu.client.factory.EmbedFactory;
 import dev.shitzuu.client.listener.MessageAdvertiseListener;
 import dev.shitzuu.client.listener.internal.CommandExecutionListener;
@@ -21,7 +22,7 @@ public class ApplicationContext {
 
     public ApplicationContext() {
         this.primaryConfig = new ConfigFactory(System.getProperty("user.dir"))
-                .produceConfig(PrimaryConfig.class, "config.hjson");
+            .produceConfig(PrimaryConfig.class, "config.hjson");
     }
 
     public void initialize() {
@@ -30,6 +31,9 @@ public class ApplicationContext {
             .setToken(primaryConfig.getToken())
             .login()
             .join();
+
+        DatabaseConnector databaseConnector = new DatabaseConnector(primaryConfig.getStorageConfig());
+        databaseConnector.initialize();
 
         CensorConfig censorConfig = primaryConfig.getCensorConfig();
 
@@ -40,34 +44,34 @@ public class ApplicationContext {
         }
 
         discordApi.addMessageCreateListener(new CommandExecutionListener(new CommandService(
-                primaryConfig.getLoggerConfig(),
-                primaryConfig.getPollConfig(),
-                primaryConfig.getCensorConfig(),
-                censorService)));
+            primaryConfig.getLoggerConfig(),
+            primaryConfig.getPollConfig(),
+            primaryConfig.getCensorConfig(),
+            censorService)));
         discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig));
 
         discordApi.addServerMemberJoinListener(event -> {
             Optional<TextChannel> optionalNotificationChannel = discordApi.getTextChannelById(primaryConfig.getLoggerConfig().getNotificationChannelSnowflake());
             optionalNotificationChannel.ifPresent(notificationChannel -> notificationChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Dołączenie")
-                    .setDescription("**Typ operacji:** Dołączenie na serwer")
-                    .addField("Podmiot", "<@" + event.getUser().getIdAsString() + ">")
-                    .setFooter(event.getUser().getDiscriminatedName(), event.getUser().getAvatar())));
+                .setTitle("ICEDROP.EU - Dołączenie")
+                .setDescription("**Typ operacji:** Dołączenie na serwer")
+                .addField("Podmiot", "<@" + event.getUser().getIdAsString() + ">")
+                .setFooter(event.getUser().getDiscriminatedName(), event.getUser().getAvatar())));
 
             Optional<TextChannel> optionalMembershipChangeChannel = discordApi.getTextChannelById(primaryConfig.getWelcomeChannelSnowflake());
             optionalMembershipChangeChannel.ifPresent(membershipChangeChannel -> membershipChangeChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("Witaj " + event.getUser().getName() + "!")
-                    .setDescription("Jesteś **" + event.getServer().getMemberCount() + "** osobą na naszym serwerze! \n\nMamy nadzieję, że zostaniesz na dłużej!\n<@" + event.getUser().getId() + ">")
-                    .setFooter(event.getUser().getDiscriminatedName(), event.getUser().getAvatar())));
+                .setTitle("Witaj " + event.getUser().getName() + "!")
+                .setDescription("Jesteś **" + event.getServer().getMemberCount() + "** osobą na naszym serwerze! \n\nMamy nadzieję, że zostaniesz na dłużej!\n<@" + event.getUser().getId() + ">")
+                .setFooter(event.getUser().getDiscriminatedName(), event.getUser().getAvatar())));
         });
 
         discordApi.addServerMemberLeaveListener(event -> {
             Optional<TextChannel> optionalNotificationChannel = discordApi.getTextChannelById(primaryConfig.getLoggerConfig().getNotificationChannelSnowflake());
             optionalNotificationChannel.ifPresent(notificationChannel -> notificationChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Opuszczenie")
-                    .setDescription("**Typ operacji:** Opuszczenie serwera")
-                    .addField("Podmiot", "<@" + event.getUser().getId() + ">")
-                    .setFooter(event.getUser().getDiscriminatedName(), event.getUser().getAvatar())));
+                .setTitle("ICEDROP.EU - Opuszczenie")
+                .setDescription("**Typ operacji:** Opuszczenie serwera")
+                .addField("Podmiot", "<@" + event.getUser().getId() + ">")
+                .setFooter(event.getUser().getDiscriminatedName(), event.getUser().getAvatar())));
         });
     }
 }

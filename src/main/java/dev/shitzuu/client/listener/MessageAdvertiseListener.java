@@ -20,8 +20,8 @@ public class MessageAdvertiseListener implements MessageCreateListener {
         if (this.isAdvertisement(event.getMessageContent())) {
             TextChannel textChannel = event.getChannel();
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setDescription("Wiadomość wysłana przez <@" + event.getMessageAuthor().getId() + "> została usunięta, ponieważ posiadała reklame.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setDescription("Wiadomość wysłana przez <@" + event.getMessageAuthor().getId() + "> została usunięta, ponieważ posiadała reklame.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
 
             Message message = event.getMessage();
             message.delete();

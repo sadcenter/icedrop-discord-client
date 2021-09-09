@@ -26,13 +26,13 @@ public class ConfigFactory {
 
     public <T extends OkaeriConfig> T produceConfig(@NotNull Class<T> clazz, @NotNull File file, @NotNull ObjectSerializer<?>... serializers) {
         return ConfigManager.create(clazz, initializer -> initializer
-                .withConfigurer(new HjsonConfigurer(), registry -> {
-                    for (ObjectSerializer<?> serializer : serializers) {
-                        registry.register(serializer);
-                    }
-                })
-                .withBindFile(file)
-                .saveDefaults()
-                .load(true));
+            .withConfigurer(new HjsonConfigurer(), registry -> {
+                for (ObjectSerializer<?> serializer : serializers) {
+                    registry.register(serializer);
+                }
+            })
+            .withBindFile(file)
+            .saveDefaults()
+            .load(true));
     }
 }

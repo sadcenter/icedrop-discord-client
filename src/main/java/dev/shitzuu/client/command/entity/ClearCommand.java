@@ -24,17 +24,17 @@ public class ClearCommand extends Command {
         TextChannel textChannel = event.getChannel();
         if (!(event.isServerMessage())) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Clear")
-                    .setDescription("Nie możesz usunąć wiadomości, ponieważ jest to możliwe tylko do użycia na serwerze.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Clear")
+                .setDescription("Nie możesz usunąć wiadomości, ponieważ jest to możliwe tylko do użycia na serwerze.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         if (arguments.length == 0) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Clear")
-                    .setDescription("Musisz podać liczbę wiadomości do usunięcia.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Clear")
+                .setDescription("Musisz podać liczbę wiadomości do usunięcia.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
@@ -43,26 +43,26 @@ public class ClearCommand extends Command {
             messageCount = Integer.parseInt(arguments[0]);
         } catch (NumberFormatException exception) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Clear")
-                    .setDescription("Podana przez ciebie wartość nie jest poprawna.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Clear")
+                .setDescription("Podana przez ciebie wartość nie jest poprawna.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Clear")
+                .setDescription("Trwa usuwanie " + messageCount + " wiadomości z kanału <#" + textChannel.getId() + ">.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()))
+            .thenApply(sentMessage -> textChannel.getMessagesBefore(messageCount, sentMessage)
+                .thenAccept(messages -> {
+                    messages.forEach(Message::delete);
+                    sentMessage.edit(EmbedFactory.produce()
                         .setTitle("ICEDROP.EU - Clear")
-                        .setDescription("Trwa usuwanie " + messageCount + " wiadomości z kanału <#" + textChannel.getId() + ">.")
-                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()))
-                .thenApply(sentMessage -> textChannel.getMessagesBefore(messageCount, sentMessage)
-                        .thenAccept(messages -> {
-                            messages.forEach(Message::delete);
-                            sentMessage.edit(EmbedFactory.produce()
-                                    .setTitle("ICEDROP.EU - Clear")
-                                    .setDescription("Usunięto " + messages.size() + " wiadomości z kanału <#" + textChannel.getId() + ">.")
-                                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                        .setDescription("Usunięto " + messages.size() + " wiadomości z kanału <#" + textChannel.getId() + ">.")
+                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
 
-                            ScheduledExecutorService scheduledExecutorService = event.getApi().getThreadPool().getScheduler();
-                            scheduledExecutorService.schedule((Callable<CompletableFuture<Void>>) sentMessage::delete, 3, TimeUnit.SECONDS);
-                        }));
+                    ScheduledExecutorService scheduledExecutorService = event.getApi().getThreadPool().getScheduler();
+                    scheduledExecutorService.schedule((Callable<CompletableFuture<Void>>) sentMessage::delete, 3, TimeUnit.SECONDS);
+                }));
     }
 }

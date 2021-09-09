@@ -60,12 +60,12 @@ public class CensorAnalysis {
     @Override
     public String toString() {
         return "CensorAnalysis{" +
-                "sample='" + sample + '\'' +
-                ", swear=" + swear +
-                ", breakdown='" + breakdown + '\'' +
-                ", label='" + label + '\'' +
-                ", probability=" + probability +
-                ", statistics=" + statistics +
-                '}';
+            "sample='" + sample + '\'' +
+            ", swear=" + swear +
+            ", breakdown='" + breakdown + '\'' +
+            ", label='" + label + '\'' +
+            ", probability=" + probability +
+            ", statistics=" + statistics +
+            '}';
     }
 }

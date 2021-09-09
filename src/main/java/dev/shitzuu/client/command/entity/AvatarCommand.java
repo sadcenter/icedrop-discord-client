@@ -32,10 +32,10 @@ public class AvatarCommand extends Command {
 
         TextChannel textChannel = event.getChannel();
         textChannel.sendMessage(EmbedFactory.produce()
-                .setTitle("ICEDROP.EU - Avatar")
-                .setThumbnail("")
-                .setImage(target.getAvatar())
-                .setDescription("Avatar użytkownika <@" + target.getId() + ">")
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+            .setTitle("ICEDROP.EU - Avatar")
+            .setThumbnail("")
+            .setImage(target.getAvatar())
+            .setDescription("Avatar użytkownika <@" + target.getId() + ">")
+            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
     }
 }

@@ -35,8 +35,8 @@ public class CommandService {
             return Optional.empty();
         }
         return commands.stream()
-                .filter(command -> command.getName().equalsIgnoreCase(name) || command.getAliases().contains(name))
-                .findAny();
+            .filter(command -> command.getName().equalsIgnoreCase(name) || command.getAliases().contains(name))
+            .findAny();
     }
 
     public Set<Command> getCommands() {

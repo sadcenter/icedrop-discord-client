@@ -35,17 +35,17 @@ public class UnbanCommand extends Command {
         Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
         if (optionalAuthor.isPresent() && !(server.hasAnyPermission(optionalAuthor.get(), PermissionType.ADMINISTRATOR, PermissionType.BAN_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Unban")
-                    .setDescription("Nie posiadasz uprawnień do odblokowywania użytkowników.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Unban")
+                .setDescription("Nie posiadasz uprawnień do odblokowywania użytkowników.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         if (arguments.length == 0) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Unban")
-                    .setDescription("Musisz wskazać użytkownika (snowflake), którego chcesz odblokować.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Unban")
+                .setDescription("Musisz wskazać użytkownika (snowflake), którego chcesz odblokować.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
@@ -60,40 +60,40 @@ public class UnbanCommand extends Command {
 
         if (!(isSnowflake)) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Unban")
-                    .setDescription("Podana przez ciebie wartość nie pasuje do typu snowflake.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Unban")
+                .setDescription("Podana przez ciebie wartość nie pasuje do typu snowflake.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         server.getBans()
-                .thenApply(bans -> bans.stream()
-                        .filter(ban -> ban.getUser().getIdAsString().equals(snowflake))
-                        .findAny())
-                .thenAccept(punishment -> {
-                    if (punishment.isEmpty()) {
+            .thenApply(bans -> bans.stream()
+                .filter(ban -> ban.getUser().getIdAsString().equals(snowflake))
+                .findAny())
+            .thenAccept(punishment -> {
+                if (punishment.isEmpty()) {
+                    textChannel.sendMessage(EmbedFactory.produce()
+                        .setTitle("ICEDROP.EU - Unban")
+                        .setDescription("Użytkownik z podanym identyfikatorem **" + snowflake + "** nie jest zablokowany, bądź nie został odnaleziony.")
+                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                    return;
+                }
+
+                server.unbanUser(snowflake)
+                    .thenAccept(invocation -> {
                         textChannel.sendMessage(EmbedFactory.produce()
-                                .setTitle("ICEDROP.EU - Unban")
-                                .setDescription("Użytkownik z podanym identyfikatorem **" + snowflake + "** nie jest zablokowany, bądź nie został odnaleziony.")
-                                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
-                        return;
-                    }
+                            .setTitle("ICEDROP.EU - Unban")
+                            .setDescription("Użytkownik <@" + snowflake + "> został odblokowany.")
+                            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
 
-                    server.unbanUser(snowflake)
-                            .thenAccept(invocation -> {
-                                textChannel.sendMessage(EmbedFactory.produce()
-                                        .setTitle("ICEDROP.EU - Unban")
-                                        .setDescription("Użytkownik <@" + snowflake + "> został odblokowany.")
-                                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
-
-                                Optional<TextChannel> optionalChannel = event.getApi().getTextChannelById(loggerConfig.getNotificationChannelSnowflake());
-                                optionalChannel.ifPresent(notificationChannel -> notificationChannel.sendMessage(EmbedFactory.produce()
-                                        .setTitle("ICEDROP.EU - Unban")
-                                        .setDescription("**Typ operacji:** Odblokowanie użytkownika")
-                                        .addField("Administrator", "<@" + event.getMessageAuthor().getIdAsString() + ">")
-                                        .addField("Podmiot", "<@" + snowflake + ">")
-                                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
-                            });
-                });
+                        Optional<TextChannel> optionalChannel = event.getApi().getTextChannelById(loggerConfig.getNotificationChannelSnowflake());
+                        optionalChannel.ifPresent(notificationChannel -> notificationChannel.sendMessage(EmbedFactory.produce()
+                            .setTitle("ICEDROP.EU - Unban")
+                            .setDescription("**Typ operacji:** Odblokowanie użytkownika")
+                            .addField("Administrator", "<@" + event.getMessageAuthor().getIdAsString() + ">")
+                            .addField("Podmiot", "<@" + snowflake + ">")
+                            .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
+                    });
+            });
     }
 }

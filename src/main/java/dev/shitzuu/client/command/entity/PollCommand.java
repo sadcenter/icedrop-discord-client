@@ -25,27 +25,27 @@ public class PollCommand extends Command {
         TextChannel textChannel = event.getChannel();
         if (arguments.length == 0) {
             textChannel.sendMessage(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Ankieta")
-                    .setDescription("Musisz podać treść pytania, którego ma dotyczyć ankieta.")
-                    .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+                .setTitle("ICEDROP.EU - Ankieta")
+                .setDescription("Musisz podać treść pytania, którego ma dotyczyć ankieta.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         textChannel.sendMessage(EmbedFactory.produce()
-                        .setTitle("ICEDROP.EU - Ankieta")
-                        .setDescription("**Ankieta**\n" + String.join(" ", arguments))
-                        .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()))
-                .thenAccept(sentMessage -> {
-                    DiscordApi discordApi = event.getApi();
+                .setTitle("ICEDROP.EU - Ankieta")
+                .setDescription("**Ankieta**\n" + String.join(" ", arguments))
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()))
+            .thenAccept(sentMessage -> {
+                DiscordApi discordApi = event.getApi();
 
-                    Optional<KnownCustomEmoji> optionalYesEmoji = discordApi.getCustomEmojiById(pollConfig.getYesEmojiSnowflake());
-                    Optional<KnownCustomEmoji> optionalNoEmoji = discordApi.getCustomEmojiById(pollConfig.getNoEmojiSnowflake());
-                    if (optionalYesEmoji.isEmpty() || optionalNoEmoji.isEmpty()) {
-                        return;
-                    }
+                Optional<KnownCustomEmoji> optionalYesEmoji = discordApi.getCustomEmojiById(pollConfig.getYesEmojiSnowflake());
+                Optional<KnownCustomEmoji> optionalNoEmoji = discordApi.getCustomEmojiById(pollConfig.getNoEmojiSnowflake());
+                if (optionalYesEmoji.isEmpty() || optionalNoEmoji.isEmpty()) {
+                    return;
+                }
 
-                    sentMessage.addReaction(optionalYesEmoji.get());
-                    sentMessage.addReaction(optionalNoEmoji.get());
-                });
+                sentMessage.addReaction(optionalYesEmoji.get());
+                sentMessage.addReaction(optionalNoEmoji.get());
+            });
     }
 }

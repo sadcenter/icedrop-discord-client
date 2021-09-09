@@ -28,9 +28,32 @@ public class PrimaryConfig extends OkaeriConfig {
 
     @Comment("This should be the list of domains, which should be mark as advertisement.")
     private List<String> advertisingDomains = Arrays.asList(
-            "discord.com",
-            "discord.gg"
+        "discord.com",
+        "discord.gg"
     );
+
+    @Comment("StorageConfig - this section contains values related with storage's configuration.")
+    private StorageConfig storageConfig = new StorageConfig();
+
+    @Getter
+    @Setter
+    public static class StorageConfig extends OkaeriConfig {
+
+        @Comment("This should be the name of your database.")
+        private String databaseName = "icedrop-client";
+
+        @Comment("This should be the hostname of your database server.")
+        private String hostname = "127.0.0.1";
+
+        @Comment("This should be the port to your database server.")
+        private int port = 3306;
+
+        @Comment("This should be the username of your account.")
+        private String username = "root";
+
+        @Comment("This should be the password to your account.")
+        private String password = "my-secret-password-123";
+    }
 
     @Comment("LoggerConfig - this section contains values related with logging.")
     private LoggerConfig loggerConfig = new LoggerConfig();
