@@ -1,5 +1,6 @@
 package dev.shitzuu.client.command.entity;
 
+import dev.shitzuu.client.config.PrimaryConfig.LoggerConfig;
 import dev.shitzuu.client.command.Command;
 import dev.shitzuu.client.factory.EmbedFactory;
 import dev.shitzuu.client.utility.UserUtil;
@@ -15,8 +16,11 @@ import java.util.Optional;
 
 public class BanCommand extends Command {
 
-    public BanCommand() {
+    private final LoggerConfig loggerConfig;
+
+    public BanCommand(LoggerConfig loggerConfig) {
         super("ban", "Blokuje gracza na serwerze.", "<prefix>ban <username> [optional:<reason>]");
+        this.loggerConfig = loggerConfig;
     }
 
     @Override
@@ -33,6 +37,7 @@ public class BanCommand extends Command {
         Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
         if (optionalAuthor.isPresent() && !(server.hasAnyPermission(optionalAuthor.get(), PermissionType.ADMINISTRATOR, PermissionType.BAN_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
+                    .setTitle("ICEDROP.EU - Ban")
                     .setDescription("Nie posiadasz uprawnień do blokowania użytkowników.")
                     .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
@@ -41,6 +46,7 @@ public class BanCommand extends Command {
         Optional<User> optionalUser = UserUtil.extractUser(event.getMessage(), arguments);
         if (optionalUser.isEmpty()) {
             textChannel.sendMessage(EmbedFactory.produce()
+                    .setTitle("ICEDROP.EU - Ban")
                     .setDescription("Nie wskazałeś użytkownika, który powinien zostać zablokowany.")
                     .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
@@ -50,6 +56,7 @@ public class BanCommand extends Command {
 
         if (server.hasPermission(user, PermissionType.ADMINISTRATOR)) {
             textChannel.sendMessage(EmbedFactory.produce()
+                    .setTitle("ICEDROP.EU - Ban")
                     .setDescription("Nie możesz zablokować <@" + user.getId() + ">, ponieważ posiada on uprawnienia Administratora.")
                     .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
@@ -63,9 +70,21 @@ public class BanCommand extends Command {
                 : reason);
 
         textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Ban")
                 .setDescription("Użytkownik **" + user.getDiscriminatedName() + "** został zablokowany na serwerze" + (reason.isEmpty()
                         ? "."
                         : " z powodem " + reason + "."))
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+
+        Optional<TextChannel> optionalChannel = event.getApi().getTextChannelById(loggerConfig.getNotificationChannelSnowflake());
+        optionalChannel.ifPresent(notificationChannel -> notificationChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Ban")
+                .setDescription("**Typ operacji:** Zablokowanie użytkownika")
+                .addField("Administrator", "<@" + event.getMessageAuthor().getIdAsString() + ">")
+                .addField("Podmiot", "<@" + user.getId() + ">")
+                .addField("Powód", reason.isEmpty()
+                        ? "Powód nie został podany."
+                        : reason)
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
     }
 }

@@ -25,12 +25,14 @@ public class PollCommand extends Command {
         TextChannel textChannel = event.getChannel();
         if (arguments.length == 0) {
             textChannel.sendMessage(EmbedFactory.produce()
+                    .setTitle("ICEDROP.EU - Ankieta")
                     .setDescription("Musisz podać treść pytania, którego ma dotyczyć ankieta.")
                     .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         textChannel.sendMessage(EmbedFactory.produce()
+                        .setTitle("ICEDROP.EU - Ankieta")
                         .setDescription("**Ankieta**\n" + String.join(" ", arguments))
                         .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()))
                 .thenAccept(sentMessage -> {

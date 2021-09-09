@@ -9,6 +9,7 @@ public class EmbedFactory {
 
     private static final Supplier<EmbedBuilder> EMBED_SUPPLIER = () ->
         new EmbedBuilder()
+                .setUrl("https://dc.icedrop.eu")
                 .setThumbnail("https://media.discordapp.net/attachments/884175063774015522/884461670397804594/logo.png")
                 .setColor(EmbedFactory.translateColor("#00BFFFFF"))
                 .setTimestampToNow();

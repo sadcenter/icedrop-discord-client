@@ -18,9 +18,11 @@ public class PingCommand extends Command {
 
         TextChannel textChannel = event.getChannel();
         textChannel.sendMessage(EmbedFactory.produce()
+                        .setTitle("ICEDROP.EU - Ping")
                         .setDescription("Trwa odbijanie piłeczki... :ping_pong:")
                         .setAuthor(event.getMessageAuthor()))
                 .thenAccept(sentMessage -> sentMessage.edit(EmbedFactory.produce()
+                        .setTitle("ICEDROP.EU - Ping")
                         .setDescription("Pong! :ping_pong: Aktualnie opóźnienie wynosi " + (System.currentTimeMillis() - measurementStart) + " milisekund.")
                         .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
     }

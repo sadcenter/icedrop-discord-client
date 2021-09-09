@@ -1,6 +1,7 @@
 package dev.shitzuu.client.command.entity;
 
 import dev.shitzuu.client.command.Command;
+import dev.shitzuu.client.config.PrimaryConfig.LoggerConfig;
 import dev.shitzuu.client.factory.EmbedFactory;
 import dev.shitzuu.client.utility.UserUtil;
 import org.javacord.api.entity.channel.TextChannel;
@@ -15,8 +16,11 @@ import java.util.Optional;
 
 public class KickCommand extends Command {
 
-    public KickCommand() {
+    private final LoggerConfig loggerConfig;
+
+    public KickCommand(LoggerConfig loggerConfig) {
         super("kick", "Wyrzuca użytkownika z serwera.", "<prefix>kick <username> [optional:<reason>]");
+        this.loggerConfig = loggerConfig;
     }
 
     @Override
@@ -66,5 +70,15 @@ public class KickCommand extends Command {
                         ? "."
                         : " z powodem " + reason + "."))
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+
+        Optional<TextChannel> optionalChannel = event.getApi().getTextChannelById(loggerConfig.getNotificationChannelSnowflake());
+        optionalChannel.ifPresent(notificationChannel -> notificationChannel.sendMessage(EmbedFactory.produce()
+                .setDescription("**Typ operacji:** Wyrzucenie użytkownika")
+                .addField("Administrator", "<@" + event.getMessageAuthor().getIdAsString() + ">")
+                .addField("Podmiot", "<@" + user.getId() + ">")
+                .addField("Powód", reason.isEmpty()
+                        ? "Powód nie został podany."
+                        : reason)
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
     }
 }

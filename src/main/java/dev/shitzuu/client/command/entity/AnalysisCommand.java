@@ -31,6 +31,7 @@ public class AnalysisCommand extends Command {
             }
 
             EmbedBuilder embedBuilder = EmbedFactory.produce()
+                    .setTitle("ICEDROP.EU - Analiza")
                     .setDescription("Poniżej znajduje się lista ostatnich analiz w których wykryto wulgarną wypowiedź. \n\nAby wyświetlić dokładne informacje na temat z jednej nich użyj komendy **!analysis <id>**")
                     .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar());
             for (CensorAnalysis analyse : censorService.getAnalyses()) {
@@ -52,6 +53,7 @@ public class AnalysisCommand extends Command {
         CensorAnalysis censorAnalysis = optionalAnalyse.get();
 
         textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Analiza")
                 .setDescription("Poniżej znajdują się informacje dotyczące analizy o identyfikatorze **" + censorAnalysis.getUniqueId() + "**.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())
                 .addField("Unikalny identyfikator", censorAnalysis.getUniqueId().toString())

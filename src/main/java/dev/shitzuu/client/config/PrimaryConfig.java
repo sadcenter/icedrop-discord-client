@@ -23,11 +23,25 @@ public class PrimaryConfig extends OkaeriConfig {
     @Comment("This should be the token to your Discord's application.")
     private String token = "This value should be set on your own. ^-^";
 
+    @Comment("This should be the snowflake of channel, where welcome messages will be sent.")
+    private String welcomeChannelSnowflake = "885233344462327888";
+
     @Comment("This should be the list of domains, which should be mark as advertisement.")
     private List<String> advertisingDomains = Arrays.asList(
             "discord.com",
             "discord.gg"
     );
+
+    @Comment("LoggerConfig - this section contains values related with logging.")
+    private LoggerConfig loggerConfig = new LoggerConfig();
+
+    @Getter
+    @Setter
+    public static class LoggerConfig extends OkaeriConfig {
+
+        @Comment("This should be the snowflake of discord's channel, where notifications should be sent.")
+        private String notificationChannelSnowflake = "885572130543116298";
+    }
 
     @Comment("PollConfig - this section contains values related with pool creation process.")
     private PollConfig pollConfig = new PollConfig();
