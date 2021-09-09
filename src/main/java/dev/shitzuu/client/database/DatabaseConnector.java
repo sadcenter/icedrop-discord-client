@@ -6,7 +6,6 @@ import dev.shitzuu.client.config.PrimaryConfig.StorageConfig;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DatabaseConnector {
 
@@ -15,15 +14,6 @@ public class DatabaseConnector {
 
     public DatabaseConnector(StorageConfig storageConfig) {
         this.dataSource = new HikariDataSource(this.getHikariConfig(storageConfig));
-    }
-
-    public void initialize() {
-        try (Statement statement = connection.createStatement()) {
-            // todo: this statement has to be implemented in the future.
-            // statement.executeUpdate("");
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
     }
 
     public Connection getConnection() throws SQLException {

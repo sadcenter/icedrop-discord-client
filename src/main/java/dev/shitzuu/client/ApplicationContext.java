@@ -6,10 +6,12 @@ import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.factory.ConfigFactory;
 import dev.shitzuu.client.database.DatabaseConnector;
+import dev.shitzuu.client.domain.Warn;
 import dev.shitzuu.client.factory.EmbedFactory;
 import dev.shitzuu.client.listener.MessageAdvertiseListener;
 import dev.shitzuu.client.listener.internal.CommandExecutionListener;
 import dev.shitzuu.client.listener.MessageSwearListener;
+import dev.shitzuu.client.service.WarnService;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.channel.TextChannel;
@@ -33,7 +35,12 @@ public class ApplicationContext {
             .join();
 
         DatabaseConnector databaseConnector = new DatabaseConnector(primaryConfig.getStorageConfig());
-        databaseConnector.initialize();
+
+        WarnService warnService = new WarnService(databaseConnector);
+        warnService.initialize();
+
+        warnService.addWarning(new Warn(1, "885614332862418974", "885614332862418974", "There is no reason about this decision.", System.currentTimeMillis()));
+        warnService.addWarning(new Warn(1, "885614332862418974", "885614332862418974", "There is no reason about this decision.", System.currentTimeMillis()));
 
         CensorConfig censorConfig = primaryConfig.getCensorConfig();
 
