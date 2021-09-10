@@ -54,7 +54,8 @@ public class ApplicationContext {
             primaryConfig.getLoggerConfig(),
             primaryConfig.getPollConfig(),
             primaryConfig.getCensorConfig(),
-            censorService)));
+            censorService,
+            warnService)));
         discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig));
 
         discordApi.addServerMemberJoinListener(event -> {

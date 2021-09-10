@@ -10,12 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WarnService {
 
-    private final LoadingCache<String, List<Warn>> warnCache = Caffeine.newBuilder()
+    private final LoadingCache<String, LinkedList<Warn>> warnCache = Caffeine.newBuilder()
         .expireAfterAccess(Duration.ofMinutes(30))
         .build(this::loadWarnings);
     private final DatabaseConnector databaseConnector;
@@ -32,8 +32,8 @@ public class WarnService {
         }
     }
 
-    public List<Warn> loadWarnings(String snowflake) {
-        List<Warn> warnings = new ArrayList<>();
+    public LinkedList<Warn> loadWarnings(String snowflake) {
+        LinkedList<Warn> warnings = new LinkedList<>();
         try (PreparedStatement preparedStatement = databaseConnector.getConnection().prepareStatement("SELECT * FROM `ic_warnings` WHERE `victimSnowflake` = ?;")) {
             preparedStatement.setString(1, snowflake);
 
@@ -53,7 +53,7 @@ public class WarnService {
         return warnings;
     }
 
-    public List<Warn> getAssociatedWarnings(String snowflake) {
+    public LinkedList<Warn> getAssociatedWarnings(String snowflake) {
         return warnCache.get(snowflake);
     }
 
@@ -66,10 +66,16 @@ public class WarnService {
         }
 
         this.saveWarning(warn);
+
+        List<Warn> warns = warnCache.get(warn.getVictimSnowflake());
+        if (warns == null) {
+            return;
+        }
+
+        warns.add(warn);
     }
 
     public void removeWarning(Warn warn) {
-        // todo: implement that
         throw new IllegalArgumentException("This feature isn't implemented yet.");
     }
 
@@ -84,5 +90,9 @@ public class WarnService {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public int getNextWarningIdentifier(String snowflake) {
+        return (this.getAssociatedWarnings(snowflake).size()) + 1;
     }
 }

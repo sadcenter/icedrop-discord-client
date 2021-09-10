@@ -16,6 +16,10 @@ public class Warn {
         this.createdAt = createdAt;
     }
 
+    public Warn(int identifier, String punisherSnowflake, String victimSnowflake, String reason) {
+        this(identifier, punisherSnowflake, victimSnowflake, reason, System.currentTimeMillis());
+    }
+
     public int getIdentifier() {
         return identifier;
     }
@@ -59,7 +63,8 @@ public class Warn {
     @Override
     public String toString() {
         return "Warn{" +
-            "punisherSnowflake='" + punisherSnowflake + '\'' +
+            "identifier=" + identifier +
+            ", punisherSnowflake='" + punisherSnowflake + '\'' +
             ", victimSnowflake='" + victimSnowflake + '\'' +
             ", reason='" + reason + '\'' +
             ", createdAt=" + createdAt +
