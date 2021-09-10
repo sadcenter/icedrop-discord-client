@@ -1,7 +1,9 @@
 package dev.shitzuu.client.listener;
 
 import dev.shitzuu.client.config.PrimaryConfig;
+import dev.shitzuu.client.domain.Warn;
 import dev.shitzuu.client.factory.EmbedFactory;
+import dev.shitzuu.client.service.WarnService;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -10,8 +12,10 @@ import org.javacord.api.listener.message.MessageCreateListener;
 public class MessageAdvertiseListener implements MessageCreateListener {
 
     private final PrimaryConfig primaryConfig;
+    private final WarnService warnService;
 
-    public MessageAdvertiseListener(PrimaryConfig primaryConfig) {
+    public MessageAdvertiseListener(PrimaryConfig primaryConfig, WarnService warnService) {
+        this.warnService = warnService;
         this.primaryConfig = primaryConfig;
     }
 
@@ -20,11 +24,17 @@ public class MessageAdvertiseListener implements MessageCreateListener {
         if (this.isAdvertisement(event.getMessageContent())) {
             TextChannel textChannel = event.getChannel();
             textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Warn")
                 .setDescription("Wiadomość wysłana przez <@" + event.getMessageAuthor().getId() + "> została usunięta, ponieważ posiadała reklame.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
 
             Message message = event.getMessage();
             message.delete();
+
+            warnService.addWarning(new Warn(warnService.getNextWarningIdentifier(event.getMessageAuthor().getIdAsString()),
+                event.getApi().getYourself().getIdAsString(),
+                event.getMessageAuthor().getIdAsString(),
+                "Wysyłanie wiadomości, która zawierała reklame."));
         }
     }
 

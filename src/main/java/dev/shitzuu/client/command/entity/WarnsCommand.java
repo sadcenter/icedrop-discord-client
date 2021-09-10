@@ -60,6 +60,7 @@ public class WarnsCommand extends Command {
         User user = optionalUser.orElseGet(optionalAuthor::get);
 
         EmbedBuilder embedBuilder = EmbedFactory.produce()
+            .setTitle("ICEDROP.EU - Warns")
             .setDescription("Poniżej znajduje się lista ostrzeżeń użytkownika <@" + user.getId() + ">.")
             .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar());
 

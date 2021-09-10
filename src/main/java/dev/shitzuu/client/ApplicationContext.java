@@ -6,7 +6,6 @@ import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.factory.ConfigFactory;
 import dev.shitzuu.client.database.DatabaseConnector;
-import dev.shitzuu.client.domain.Warn;
 import dev.shitzuu.client.factory.EmbedFactory;
 import dev.shitzuu.client.listener.MessageAdvertiseListener;
 import dev.shitzuu.client.listener.internal.CommandExecutionListener;
@@ -39,9 +38,6 @@ public class ApplicationContext {
         WarnService warnService = new WarnService(databaseConnector);
         warnService.initialize();
 
-        warnService.addWarning(new Warn(1, "885614332862418974", "885614332862418974", "There is no reason about this decision.", System.currentTimeMillis()));
-        warnService.addWarning(new Warn(1, "885614332862418974", "885614332862418974", "There is no reason about this decision.", System.currentTimeMillis()));
-
         CensorConfig censorConfig = primaryConfig.getCensorConfig();
 
         CensorService censorService = null;
@@ -56,7 +52,7 @@ public class ApplicationContext {
             primaryConfig.getCensorConfig(),
             censorService,
             warnService)));
-        discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig));
+        discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig, warnService));
 
         discordApi.addServerMemberJoinListener(event -> {
             Optional<TextChannel> optionalNotificationChannel = discordApi.getTextChannelById(primaryConfig.getLoggerConfig().getNotificationChannelSnowflake());

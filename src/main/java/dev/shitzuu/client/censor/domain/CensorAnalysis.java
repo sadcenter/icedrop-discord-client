@@ -2,7 +2,7 @@ package dev.shitzuu.client.censor.domain;
 
 import java.util.UUID;
 
-public class CensorAnalysis {
+public class  CensorAnalysis {
 
     private final String entity;
 
