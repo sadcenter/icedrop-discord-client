@@ -75,10 +75,6 @@ public class WarnService {
         warns.add(warn);
     }
 
-    public void removeWarning(Warn warn) {
-        throw new IllegalArgumentException("This feature isn't implemented yet.");
-    }
-
     public void saveWarning(Warn warn) {
         try (PreparedStatement preparedStatement = databaseConnector.getConnection().prepareStatement("INSERT INTO `ic_warnings` (`identifier`, `punisherSnowflake`, `victimSnowflake`, `reason`, `createdAt`) VALUES (?, ?, ?, ?, ?);")) {
             preparedStatement.setInt(1, warn.getIdentifier());
