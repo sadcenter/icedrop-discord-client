@@ -31,6 +31,7 @@ public class CommandService {
         this.commands.add(new WarnsCommand(warnService));
         this.commands.add(new DelWarnCommand(warnService));
         this.commands.add(new MuteCommand(primaryConfig, loggerConfig));
+        this.commands.add(new UnmuteCommand(primaryConfig, loggerConfig));
         if (censorConfig.isEnabled()) {
             this.commands.add(new AnalysisCommand(censorService));
         }
