@@ -5,7 +5,6 @@ import java.util.UUID;
 public class CensorAnalysis {
 
     private final String entity;
-
     private final UUID uniqueId;
     private final String sample;
     private final boolean swear;
