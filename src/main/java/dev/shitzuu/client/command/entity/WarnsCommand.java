@@ -37,13 +37,11 @@ public class WarnsCommand extends Command {
             return;
         }
 
-        Server server = optionalServer.get();
-
         Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
-        if (optionalAuthor.isPresent() && !(server.hasAnyPermission(optionalAuthor.get(), PermissionType.ADMINISTRATOR, PermissionType.MANAGE_MESSAGES))) {
+        if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.MANAGE_MESSAGES))) {
             textChannel.sendMessage(EmbedFactory.produce()
                 .setTitle("ICEDROP.EU - Warns")
-                .setDescription("Nie posiadasz uprawnień do ostrzegania użytkowników.")
+                .setDescription("Nie posiadasz uprawnień do wyświetlania informacji na temat ostrzegania użytkowników.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }

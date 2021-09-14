@@ -6,6 +6,7 @@ import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.emoji.KnownCustomEmoji;
+import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +24,14 @@ public class PollCommand extends Command {
     @Override
     public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
         TextChannel textChannel = event.getChannel();
+        if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.MANAGE_MESSAGES))) {
+            textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Ankieta")
+                .setDescription("Nie posiadasz uprawnień do tworzenia ankiet.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+            return;
+        }
+
         if (arguments.length == 0) {
             textChannel.sendMessage(EmbedFactory.produce()
                 .setTitle("ICEDROP.EU - Ankieta")

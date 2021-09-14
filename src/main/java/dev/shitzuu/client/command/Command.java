@@ -1,10 +1,14 @@
 package dev.shitzuu.client.command;
 
+import org.javacord.api.entity.permission.PermissionType;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Command {
 
@@ -25,6 +29,18 @@ public abstract class Command {
     }
 
     public abstract void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments);
+
+    public boolean hasPermission(@NotNull MessageCreateEvent event, @NotNull PermissionType... permissions) {
+        Optional<Server> optionalServer = event.getServer();
+        if (optionalServer.isEmpty()) {
+            return false;
+        }
+
+        Server server = optionalServer.get();
+
+        Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
+        return optionalAuthor.isPresent() && server.hasAnyPermission(optionalAuthor.get(), permissions);
+    }
 
     public String getName() {
         return name;

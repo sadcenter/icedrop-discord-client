@@ -6,7 +6,6 @@ import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,9 +30,7 @@ public class UnbanCommand extends Command {
         }
 
         Server server = optionalServer.get();
-
-        Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
-        if (optionalAuthor.isPresent() && !(server.hasAnyPermission(optionalAuthor.get(), PermissionType.ADMINISTRATOR, PermissionType.BAN_MEMBERS))) {
+        if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.BAN_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
                 .setTitle("ICEDROP.EU - Unban")
                 .setDescription("Nie posiadasz uprawnień do odblokowywania użytkowników.")

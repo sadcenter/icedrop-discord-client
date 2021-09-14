@@ -34,13 +34,10 @@ public class DeleteWarnCommand extends Command {
             return;
         }
 
-        Server server = optionalServer.get();
-
-        Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
-        if (optionalAuthor.isPresent() && !(server.hasAnyPermission(optionalAuthor.get(), PermissionType.ADMINISTRATOR, PermissionType.MANAGE_MESSAGES))) {
+        if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.MANAGE_MESSAGES))) {
             textChannel.sendMessage(EmbedFactory.produce()
                 .setTitle("ICEDROP.EU - Delwarn")
-                .setDescription("Nie posiadasz uprawnień do usuwania ostrzeżeń.")
+                .setDescription("Nie posiadasz uprawnień do usuwania ostrzeżeń użytkowników.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }

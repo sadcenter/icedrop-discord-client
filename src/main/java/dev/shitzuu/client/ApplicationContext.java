@@ -8,8 +8,8 @@ import dev.shitzuu.client.config.factory.ConfigFactory;
 import dev.shitzuu.client.database.DatabaseConnector;
 import dev.shitzuu.client.factory.EmbedFactory;
 import dev.shitzuu.client.listener.MessageAdvertiseListener;
-import dev.shitzuu.client.listener.internal.CommandExecutionListener;
 import dev.shitzuu.client.listener.MessageSwearListener;
+import dev.shitzuu.client.listener.internal.CommandExecutionListener;
 import dev.shitzuu.client.service.WarnService;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -47,6 +47,7 @@ public class ApplicationContext {
         }
 
         discordApi.addMessageCreateListener(new CommandExecutionListener(new CommandService(
+            primaryConfig,
             primaryConfig.getLoggerConfig(),
             primaryConfig.getPollConfig(),
             primaryConfig.getCensorConfig(),

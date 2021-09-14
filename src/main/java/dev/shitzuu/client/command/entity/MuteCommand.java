@@ -1,30 +1,40 @@
 package dev.shitzuu.client.command.entity;
 
 import dev.shitzuu.client.command.Command;
+import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.LoggerConfig;
 import dev.shitzuu.client.factory.EmbedFactory;
 import dev.shitzuu.client.utility.UserUtil;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.permission.PermissionType;
+import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Optional;
 
-public class BanCommand extends Command {
+public class MuteCommand extends Command {
 
+    private final PrimaryConfig primaryConfig;
     private final LoggerConfig loggerConfig;
 
-    public BanCommand(LoggerConfig loggerConfig) {
-        super("ban", "Blokuje gracza na serwerze.", "<prefix>ban <username> [optional:<reason>]");
+    public MuteCommand(PrimaryConfig primaryConfig, LoggerConfig loggerConfig) {
+        super("mute", "Wycisza użytkownika na serwerze.", "<prefix>mute <username>");
+        this.primaryConfig = primaryConfig;
         this.loggerConfig = loggerConfig;
     }
 
     @Override
     public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+        Optional<Role> optionalRole = event.getApi().getRoleById(primaryConfig.getMuteGroupSnowflake());
+        if (optionalRole.isEmpty()) {
+            return;
+        }
+
+        Role role = optionalRole.get();
+
         TextChannel textChannel = event.getChannel();
 
         Optional<Server> optionalServer = event.getServer();
@@ -33,10 +43,10 @@ public class BanCommand extends Command {
         }
 
         Server server = optionalServer.get();
-        if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.BAN_MEMBERS))) {
+        if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.MUTE_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
-                .setTitle("ICEDROP.EU - Ban")
-                .setDescription("Nie posiadasz uprawnień do blokowania użytkowników.")
+                .setTitle("ICEDROP.EU - Mute")
+                .setDescription("Nie posiadasz uprawnień do wyciszania użytkowników.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
@@ -44,45 +54,41 @@ public class BanCommand extends Command {
         Optional<User> optionalUser = UserUtil.extractUser(event.getMessage(), arguments);
         if (optionalUser.isEmpty()) {
             textChannel.sendMessage(EmbedFactory.produce()
-                .setTitle("ICEDROP.EU - Ban")
-                .setDescription("Nie wskazałeś użytkownika, który powinien zostać zablokowany.")
+                .setTitle("ICEDROP.EU - Mute")
+                .setDescription("Nie wskazałeś użytkownika, który powinien zostać wyciszony.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
         User user = optionalUser.get();
-
         if (server.hasPermission(user, PermissionType.ADMINISTRATOR)) {
             textChannel.sendMessage(EmbedFactory.produce()
-                .setTitle("ICEDROP.EU - Ban")
-                .setDescription("Nie możesz zablokować <@" + user.getId() + ">, ponieważ posiada on uprawnienia Administratora.")
+                .setTitle("ICEDROP.EU - Mute")
+                .setDescription("Nie możesz wyciszyć <@" + user.getId() + ">, ponieważ posiada on uprawnienia Administratora.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
 
+        if (user.getRoles(server).contains(role)) {
+            textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Mute")
+                .setDescription("Nie możesz wyciszyć <@" + user.getId() + ">, ponieważ jest on już wyciszony.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
+            return;
+        }
 
-        String reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
-
-        server.banUser(user, 7, reason.isEmpty()
-            ? null
-            : reason);
+        user.addRole(role);
 
         textChannel.sendMessage(EmbedFactory.produce()
-            .setTitle("ICEDROP.EU - Ban")
-            .setDescription("Użytkownik **" + user.getDiscriminatedName() + "** został zablokowany na serwerze" + (reason.isEmpty()
-                ? "."
-                : " z powodem " + reason + "."))
+            .setTitle("ICEDROP.EU - Mute")
+            .setDescription("Użytkownik **" + user.getDiscriminatedName() + "** został wyciszony.")
             .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
 
         Optional<TextChannel> optionalChannel = event.getApi().getTextChannelById(loggerConfig.getNotificationChannelSnowflake());
         optionalChannel.ifPresent(notificationChannel -> notificationChannel.sendMessage(EmbedFactory.produce()
-            .setTitle("ICEDROP.EU - Ban")
-            .setDescription("**Typ operacji:** Zablokowanie użytkownika")
+            .setDescription("**Typ operacji:** Wyciszenie użytkownika")
             .addField("Administrator", "<@" + event.getMessageAuthor().getIdAsString() + ">")
             .addField("Podmiot", "<@" + user.getId() + ">")
-            .addField("Powód", reason.isEmpty()
-                ? "Powód nie został podany."
-                : reason)
             .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
     }
 }

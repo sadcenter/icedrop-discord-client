@@ -26,6 +26,9 @@ public class PrimaryConfig extends OkaeriConfig {
     @Comment("This should be the snowflake of channel, where welcome messages will be sent.")
     private String welcomeChannelSnowflake = "885233344462327888";
 
+    @Comment("This should be the snowflake of group, which will be added to user while he will be muted.")
+    private String muteGroupSnowflake = "887358441495072828";
+
     @Comment("This should be the list of domains, which should be mark as advertisement.")
     private List<String> advertisingDomains = Arrays.asList(
         "discord.com",

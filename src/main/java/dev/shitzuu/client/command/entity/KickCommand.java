@@ -37,6 +37,7 @@ public class KickCommand extends Command {
         Optional<User> optionalAuthor = event.getMessageAuthor().asUser();
         if (optionalAuthor.isPresent() && !(server.hasAnyPermission(optionalAuthor.get(), PermissionType.ADMINISTRATOR, PermissionType.KICK_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Kick")
                 .setDescription("Nie posiadasz uprawnień do wyrzucania użytkowników.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
@@ -45,6 +46,7 @@ public class KickCommand extends Command {
         Optional<User> optionalUser = UserUtil.extractUser(event.getMessage(), arguments);
         if (optionalUser.isEmpty()) {
             textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Kick")
                 .setDescription("Nie wskazałeś użytkownika, który powinien zostać wyrzucony.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
@@ -52,9 +54,10 @@ public class KickCommand extends Command {
 
         User user = optionalUser.get();
 
-        if (server.hasPermission(user, PermissionType.ADMINISTRATOR)) {
+        if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.KICK_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
-                .setDescription("Nie możesz wyrzucić <@" + user.getId() + ">, ponieważ posiada on uprawnienia Administratora.")
+                .setTitle("ICEDROP.EU - Kick")
+                .setDescription("Nie posiadasz uprawnień do wyrzucania użytkowników.")
                 .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
             return;
         }
@@ -66,6 +69,7 @@ public class KickCommand extends Command {
             : reason);
 
         textChannel.sendMessage(EmbedFactory.produce()
+            .setTitle("ICEDROP.EU - Kick")
             .setDescription("Użytkownik **" + user.getDiscriminatedName() + "** został wyrzucony z serwera" + (reason.isEmpty()
                 ? "."
                 : " z powodem " + reason + "."))
