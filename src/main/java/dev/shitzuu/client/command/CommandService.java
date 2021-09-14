@@ -29,7 +29,7 @@ public class CommandService {
         this.commands.add(new SayCommand());
         this.commands.add(new WarnCommand(warnService));
         this.commands.add(new WarnsCommand(warnService));
-        this.commands.add(new DeleteWarnCommand(warnService));
+        this.commands.add(new DelWarnCommand(warnService));
         this.commands.add(new MuteCommand(primaryConfig, loggerConfig));
         if (censorConfig.isEnabled()) {
             this.commands.add(new AnalysisCommand(censorService));

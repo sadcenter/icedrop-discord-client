@@ -16,11 +16,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Optional;
 
-public class DeleteWarnCommand extends Command {
+public class DelWarnCommand extends Command {
 
     private final WarnService warnService;
 
-    public DeleteWarnCommand(WarnService warnService) {
+    public DelWarnCommand(WarnService warnService) {
         super("delwarn", "Usuwa ostatnie ostrzeżenia dla wskazanego użytkownika.", "<prefix>delwarn <username>");
         this.warnService = warnService;
     }
