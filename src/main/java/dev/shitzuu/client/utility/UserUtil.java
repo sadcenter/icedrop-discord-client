@@ -3,7 +3,6 @@ package dev.shitzuu.client.utility;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +14,11 @@ public final class UserUtil {
 
     }
 
-    public static Optional<User> extractUser(@NotNull Message message, @NotNull String[] arguments) {
+    public static Optional<User> extractUser(Message message, String[] arguments) {
+        if (message == null || arguments == null) {
+            return Optional.empty();
+        }
+
         Optional<Server> optionalServer = message.getServer();
         if (optionalServer.isEmpty() || arguments.length == 0) {
             return Optional.empty();

@@ -2,14 +2,9 @@ package dev.shitzuu.client.config;
 
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
-
-@Getter
-@Setter
 
 @Header("############################################")
 @Header("#                                          #")
@@ -38,8 +33,6 @@ public class PrimaryConfig extends OkaeriConfig {
     @Comment("StorageConfig - this section contains values related with storage's configuration.")
     private StorageConfig storageConfig = new StorageConfig();
 
-    @Getter
-    @Setter
     public static class StorageConfig extends OkaeriConfig {
 
         @Comment("This should be the name of your database.")
@@ -56,24 +49,68 @@ public class PrimaryConfig extends OkaeriConfig {
 
         @Comment("This should be the password to your account.")
         private String password = "my-secret-password-123";
+
+        public String getDatabaseName() {
+            return databaseName;
+        }
+
+        public void setDatabaseName(String databaseName) {
+            this.databaseName = databaseName;
+        }
+
+        public String getHostname() {
+            return hostname;
+        }
+
+        public void setHostname(String hostname) {
+            this.hostname = hostname;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 
     @Comment("LoggerConfig - this section contains values related with logging.")
     private LoggerConfig loggerConfig = new LoggerConfig();
 
-    @Getter
-    @Setter
     public static class LoggerConfig extends OkaeriConfig {
 
         @Comment("This should be the snowflake of discord's channel, where notifications should be sent.")
         private String notificationChannelSnowflake = "885572130543116298";
+
+        public String getNotificationChannelSnowflake() {
+            return notificationChannelSnowflake;
+        }
+
+        public void setNotificationChannelSnowflake(String notificationChannelSnowflake) {
+            this.notificationChannelSnowflake = notificationChannelSnowflake;
+        }
     }
 
     @Comment("PollConfig - this section contains values related with pool creation process.")
     private PollConfig pollConfig = new PollConfig();
 
-    @Getter
-    @Setter
     public static class PollConfig extends OkaeriConfig {
 
         @Comment("This should be the snowflake of yes emoji.")
@@ -81,13 +118,27 @@ public class PrimaryConfig extends OkaeriConfig {
 
         @Comment("This should be the snowflake of no emoji.")
         public String noEmojiSnowflake = "885232342472482846";
+
+        public String getYesEmojiSnowflake() {
+            return yesEmojiSnowflake;
+        }
+
+        public void setYesEmojiSnowflake(String yesEmojiSnowflake) {
+            this.yesEmojiSnowflake = yesEmojiSnowflake;
+        }
+
+        public String getNoEmojiSnowflake() {
+            return noEmojiSnowflake;
+        }
+
+        public void setNoEmojiSnowflake(String noEmojiSnowflake) {
+            this.noEmojiSnowflake = noEmojiSnowflake;
+        }
     }
 
     @Comment("CensorConfig - this section contains values related with okaeri's ai-censor product.")
     private CensorConfig censorConfig = new CensorConfig();
 
-    @Getter
-    @Setter
     public static class CensorConfig extends OkaeriConfig {
 
         @Comment("This should be the value which is representing status of censor.")
@@ -95,5 +146,85 @@ public class PrimaryConfig extends OkaeriConfig {
 
         @Comment("This should be the token to purchased product.")
         private String token = "This value should be set on your own. ^_^";
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getWelcomeChannelSnowflake() {
+        return welcomeChannelSnowflake;
+    }
+
+    public void setWelcomeChannelSnowflake(String welcomeChannelSnowflake) {
+        this.welcomeChannelSnowflake = welcomeChannelSnowflake;
+    }
+
+    public String getMuteGroupSnowflake() {
+        return muteGroupSnowflake;
+    }
+
+    public void setMuteGroupSnowflake(String muteGroupSnowflake) {
+        this.muteGroupSnowflake = muteGroupSnowflake;
+    }
+
+    public List<String> getAdvertisingDomains() {
+        return advertisingDomains;
+    }
+
+    public void setAdvertisingDomains(List<String> advertisingDomains) {
+        this.advertisingDomains = advertisingDomains;
+    }
+
+    public StorageConfig getStorageConfig() {
+        return storageConfig;
+    }
+
+    public void setStorageConfig(StorageConfig storageConfig) {
+        this.storageConfig = storageConfig;
+    }
+
+    public LoggerConfig getLoggerConfig() {
+        return loggerConfig;
+    }
+
+    public void setLoggerConfig(LoggerConfig loggerConfig) {
+        this.loggerConfig = loggerConfig;
+    }
+
+    public PollConfig getPollConfig() {
+        return pollConfig;
+    }
+
+    public void setPollConfig(PollConfig pollConfig) {
+        this.pollConfig = pollConfig;
+    }
+
+    public CensorConfig getCensorConfig() {
+        return censorConfig;
+    }
+
+    public void setCensorConfig(CensorConfig censorConfig) {
+        this.censorConfig = censorConfig;
     }
 }

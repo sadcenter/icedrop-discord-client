@@ -4,7 +4,6 @@ import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.hjson.HjsonConfigurer;
 import eu.okaeri.configs.serdes.ObjectSerializer;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -20,11 +19,11 @@ public class ConfigFactory {
         this(new File(path));
     }
 
-    public <T extends OkaeriConfig> T produceConfig(@NotNull Class<T> clazz, @NotNull String fileName, @NotNull ObjectSerializer<?>... serializers) {
+    public <T extends OkaeriConfig> T produceConfig(Class<T> clazz, String fileName, ObjectSerializer<?>... serializers) {
         return this.produceConfig(clazz, new File(this.directory, fileName), serializers);
     }
 
-    public <T extends OkaeriConfig> T produceConfig(@NotNull Class<T> clazz, @NotNull File file, @NotNull ObjectSerializer<?>... serializers) {
+    public <T extends OkaeriConfig> T produceConfig(Class<T> clazz, File file, ObjectSerializer<?>... serializers) {
         return ConfigManager.create(clazz, initializer -> initializer
             .withConfigurer(new HjsonConfigurer(), registry -> {
                 for (ObjectSerializer<?> serializer : serializers) {

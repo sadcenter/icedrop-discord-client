@@ -1,70 +1,25 @@
 package dev.shitzuu.client.censor.domain;
 
+import org.immutables.value.Value;
+
 import java.util.UUID;
 
-public class CensorAnalysis {
+@Value.Immutable
+public interface CensorAnalysis {
 
-    private final String entity;
-    private final UUID uniqueId;
-    private final String sample;
-    private final boolean swear;
-    private final String breakdown;
-    private final String label;
-    private final float probability;
-    private final CensorAnalysisStatistics statistics;
+    UUID getUniqueId();
 
-    public CensorAnalysis(String entity, String sample, boolean swear, String breakdown, String label, float probability, CensorAnalysisStatistics statistics) {
-        this.entity = entity;
-        this.uniqueId = UUID.randomUUID();
-        this.sample = sample;
-        this.swear = swear;
-        this.breakdown = breakdown;
-        this.label = label;
-        this.probability = probability;
-        this.statistics = statistics;
-    }
+    String getEntity();
 
-    public String getEntity() {
-        return entity;
-    }
+    String getSample();
 
-    public UUID getUniqueId() {
-        return uniqueId;
-    }
+    boolean isSwear();
 
-    public String getSample() {
-        return sample;
-    }
+    String getBreakdown();
 
-    public boolean isSwear() {
-        return swear;
-    }
+    String getLabel();
 
-    public String getBreakdown() {
-        return breakdown;
-    }
+    float getProbability();
 
-    public String getLabel() {
-        return label;
-    }
-
-    public float getProbability() {
-        return probability;
-    }
-
-    public CensorAnalysisStatistics getStatistics() {
-        return statistics;
-    }
-
-    @Override
-    public String toString() {
-        return "CensorAnalysis{" +
-            "sample='" + sample + '\'' +
-            ", swear=" + swear +
-            ", breakdown='" + breakdown + '\'' +
-            ", label='" + label + '\'' +
-            ", probability=" + probability +
-            ", statistics=" + statistics +
-            '}';
-    }
+    CensorAnalysisStatistics getStatistics();
 }

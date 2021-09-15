@@ -8,7 +8,6 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -20,7 +19,7 @@ public class SayCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         Optional<User> optionalUser = event.getMessageAuthor().asUser();
         if (optionalUser.isEmpty()) {
             return;

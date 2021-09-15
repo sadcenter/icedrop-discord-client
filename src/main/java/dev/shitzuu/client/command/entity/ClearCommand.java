@@ -5,7 +5,6 @@ import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -20,7 +19,7 @@ public class ClearCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         TextChannel textChannel = event.getChannel();
         if (!(event.isServerMessage())) {
             textChannel.sendMessage(EmbedFactory.produce()

@@ -9,7 +9,6 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class KickCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         TextChannel textChannel = event.getChannel();
 
         Optional<Server> optionalServer = event.getServer();
@@ -53,7 +52,6 @@ public class KickCommand extends Command {
         }
 
         User user = optionalUser.get();
-
         if (!(this.hasPermission(event, PermissionType.ADMINISTRATOR, PermissionType.KICK_MEMBERS))) {
             textChannel.sendMessage(EmbedFactory.produce()
                 .setTitle("ICEDROP.EU - Kick")

@@ -2,7 +2,7 @@ package dev.shitzuu.client.factory;
 
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.function.Supplier;
 
 public class EmbedFactory {

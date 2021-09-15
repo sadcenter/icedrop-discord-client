@@ -4,7 +4,6 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,20 +16,20 @@ public abstract class Command {
     private final String syntax;
     private final List<String> aliases;
 
-    public Command(String name, String description, String syntax, List<String> aliases) {
+    protected Command(String name, String description, String syntax, List<String> aliases) {
         this.name = name;
         this.description = description;
         this.syntax = syntax;
         this.aliases = aliases;
     }
 
-    public Command(String name, String description, String syntax) {
+    protected Command(String name, String description, String syntax) {
         this(name, description, syntax, Collections.emptyList());
     }
 
-    public abstract void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments);
+    public abstract void invokeCommand(MessageCreateEvent event, String[] arguments);
 
-    public boolean hasPermission(@NotNull MessageCreateEvent event, @NotNull PermissionType... permissions) {
+    public boolean hasPermission(MessageCreateEvent event, PermissionType... permissions) {
         Optional<Server> optionalServer = event.getServer();
         if (optionalServer.isEmpty()) {
             return false;

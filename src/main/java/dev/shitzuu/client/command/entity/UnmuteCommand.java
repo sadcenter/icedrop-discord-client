@@ -11,7 +11,6 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public class UnmuteCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         Optional<Role> optionalRole = event.getApi().getRoleById(primaryConfig.getMuteGroupSnowflake());
         if (optionalRole.isEmpty()) {
             return;
