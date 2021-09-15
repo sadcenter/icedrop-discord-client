@@ -1,12 +1,12 @@
 package dev.shitzuu.client.censor;
 
 import dev.shitzuu.client.censor.domain.CensorAnalysis;
-import dev.shitzuu.client.censor.domain.CensorAnalysisStatistics;
+import dev.shitzuu.client.censor.domain.ImmutableCensorAnalysis;
+import dev.shitzuu.client.censor.domain.ImmutableCensorAnalysisStatistics;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
@@ -27,13 +27,13 @@ public class CensorService {
         this.analyses = new LinkedList<>();
     }
 
-    public Optional<CensorAnalysis> getAnalyse(@NotNull UUID uniqueId) {
+    public Optional<CensorAnalysis> getAnalyse(UUID uniqueId) {
         return this.analyses.stream()
             .filter(analyse -> analyse.getUniqueId().equals(uniqueId))
             .findAny();
     }
 
-    public CompletableFuture<CensorAnalysis> analyze(@NotNull String entity, @NotNull String sample) {
+    public CompletableFuture<ImmutableCensorAnalysis> analyze(String entity, String sample) {
         return Unirest.post("https://ai-censor.okaeri.eu/predict")
             .header("Token", this.token)
             .header("Content-Type", "application/json")
@@ -47,19 +47,23 @@ public class CensorService {
                 JSONObject generalObject = jsonObject.getJSONObject("general");
                 JSONObject detailsObject = jsonObject.getJSONObject("details");
                 JSONObject elapsedObject = jsonObject.getJSONObject("elapsed");
-                return this.cacheAndGet(new CensorAnalysis(entity, sample,
-                    generalObject.getBoolean("swear"),
-                    generalObject.getString("breakdown"),
-                    detailsObject.getString("ai_label"),
-                    detailsObject.getFloat("ai_probability"),
-                    new CensorAnalysisStatistics(
-                        elapsedObject.getFloat("all"),
-                        elapsedObject.getFloat("processing")
-                    )));
+                return this.cacheAndGet(ImmutableCensorAnalysis.builder()
+                    .uniqueId(UUID.randomUUID())
+                    .entity(entity)
+                    .sample(sample)
+                    .isSwear(generalObject.getBoolean("swear"))
+                    .breakdown(generalObject.getString("breakdown"))
+                    .label(detailsObject.getString("ai_label"))
+                    .probability(detailsObject.getFloat("ai_probability"))
+                    .statistics(ImmutableCensorAnalysisStatistics.builder()
+                        .elapsedAll(elapsedObject.getFloat("all"))
+                        .elapsedProcessing(elapsedObject.getFloat("processing"))
+                        .build())
+                    .build());
             });
     }
 
-    private CensorAnalysis cacheAndGet(CensorAnalysis censorAnalysis) {
+    private ImmutableCensorAnalysis cacheAndGet(ImmutableCensorAnalysis censorAnalysis) {
         if (!(censorAnalysis.isSwear())) {
             return censorAnalysis;
         }

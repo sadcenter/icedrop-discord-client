@@ -6,7 +6,6 @@ import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
@@ -20,7 +19,7 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         EmbedBuilder embedBuilder = EmbedFactory.produce()
             .setTitle("ICEDROP.EU - Pomoc")
             .setDescription("Poniżej znajdziesz spis dostępnych komend:")

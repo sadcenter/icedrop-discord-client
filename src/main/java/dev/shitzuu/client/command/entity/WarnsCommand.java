@@ -1,9 +1,9 @@
 package dev.shitzuu.client.command.entity;
 
 import dev.shitzuu.client.command.Command;
-import dev.shitzuu.client.domain.Warn;
+import dev.shitzuu.client.warn.Warn;
 import dev.shitzuu.client.factory.EmbedFactory;
-import dev.shitzuu.client.service.WarnService;
+import dev.shitzuu.client.warn.WarnService;
 import dev.shitzuu.client.utility.UserUtil;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -11,7 +11,6 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -29,7 +28,7 @@ public class WarnsCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         TextChannel textChannel = event.getChannel();
 
         Optional<Server> optionalServer = event.getServer();

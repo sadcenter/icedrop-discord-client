@@ -6,7 +6,7 @@ import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.PrimaryConfig.LoggerConfig;
 import dev.shitzuu.client.config.PrimaryConfig.PollConfig;
-import dev.shitzuu.client.service.WarnService;
+import dev.shitzuu.client.warn.WarnService;
 
 import java.util.HashSet;
 import java.util.Optional;

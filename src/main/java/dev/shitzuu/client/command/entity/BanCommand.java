@@ -9,7 +9,6 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class BanCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         TextChannel textChannel = event.getChannel();
 
         Optional<Server> optionalServer = event.getServer();
@@ -51,7 +50,6 @@ public class BanCommand extends Command {
         }
 
         User user = optionalUser.get();
-
         if (server.hasPermission(user, PermissionType.ADMINISTRATOR)) {
             textChannel.sendMessage(EmbedFactory.produce()
                 .setTitle("ICEDROP.EU - Ban")
@@ -60,12 +58,9 @@ public class BanCommand extends Command {
             return;
         }
 
-
         String reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
 
-        server.banUser(user, 7, reason.isEmpty()
-            ? null
-            : reason);
+        server.banUser(user, 7, reason.isEmpty() ? null : reason);
 
         textChannel.sendMessage(EmbedFactory.produce()
             .setTitle("ICEDROP.EU - Ban")

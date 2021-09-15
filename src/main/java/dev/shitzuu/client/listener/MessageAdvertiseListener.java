@@ -1,9 +1,9 @@
 package dev.shitzuu.client.listener;
 
 import dev.shitzuu.client.config.PrimaryConfig;
-import dev.shitzuu.client.domain.Warn;
+import dev.shitzuu.client.warn.ModifiableWarn;
 import dev.shitzuu.client.factory.EmbedFactory;
-import dev.shitzuu.client.service.WarnService;
+import dev.shitzuu.client.warn.WarnService;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -31,10 +31,12 @@ public class MessageAdvertiseListener implements MessageCreateListener {
             Message message = event.getMessage();
             message.delete();
 
-            warnService.addWarning(new Warn(warnService.getNextWarningIdentifier(event.getMessageAuthor().getIdAsString()),
-                event.getApi().getYourself().getIdAsString(),
-                event.getMessageAuthor().getIdAsString(),
-                "Wysyłanie wiadomości, która zawierała reklame."));
+            warnService.addWarning(ModifiableWarn.create()
+                .setIdentifier(warnService.getNextWarningIdentifier(event.getMessageAuthor().getIdAsString()))
+                .setPunisherSnowflake(event.getApi().getYourself().getIdAsString())
+                .setVictimSnowflake(event.getMessageAuthor().getIdAsString())
+                .setReason("Wysyłanie wiadomości, która zawierała reklame.")
+                .setCreatedAt(System.currentTimeMillis()));
         }
     }
 

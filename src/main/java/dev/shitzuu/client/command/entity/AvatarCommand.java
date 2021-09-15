@@ -6,7 +6,6 @@ import dev.shitzuu.client.utility.UserUtil;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -17,7 +16,7 @@ public class AvatarCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         Optional<User> optionalUser = event.getMessageAuthor().asUser();
         if (optionalUser.isEmpty()) {
             return;

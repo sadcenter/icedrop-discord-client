@@ -4,7 +4,6 @@ import dev.shitzuu.client.command.Command;
 import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class PingCommand extends Command {
 
@@ -13,7 +12,7 @@ public class PingCommand extends Command {
     }
 
     @Override
-    public void invokeCommand(@NotNull MessageCreateEvent event, @NotNull String[] arguments) {
+    public void invokeCommand(MessageCreateEvent event, String[] arguments) {
         long measurementStart = System.currentTimeMillis();
 
         TextChannel textChannel = event.getChannel();

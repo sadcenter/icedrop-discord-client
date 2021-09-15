@@ -1,28 +1,11 @@
 package dev.shitzuu.client.censor.domain;
 
-public class CensorAnalysisStatistics {
+import org.immutables.value.Value;
 
-    private final float elapsedAll;
-    private final float elapsedProcessing;
+@Value.Immutable
+public interface CensorAnalysisStatistics {
 
-    public CensorAnalysisStatistics(float elapsedAll, float elapsedProcessing) {
-        this.elapsedAll = elapsedAll;
-        this.elapsedProcessing = elapsedProcessing;
-    }
+    float getElapsedAll();
 
-    public float getElapsedAll() {
-        return elapsedAll;
-    }
-
-    public float getElapsedProcessing() {
-        return elapsedProcessing;
-    }
-
-    @Override
-    public String toString() {
-        return "CensorAnalysisStatistics{" +
-            "elapsedAll=" + elapsedAll +
-            ", elapsedProcessing=" + elapsedProcessing +
-            '}';
-    }
+    float getElapsedProcessing();
 }
