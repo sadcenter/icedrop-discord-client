@@ -29,7 +29,7 @@
         <dependency>
             <groupId>eu.okaeri</groupId>
             <artifactId>okaeri-configs-hjson</artifactId>
-            <version>3.2.0</version>
+            <version>3.3.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
