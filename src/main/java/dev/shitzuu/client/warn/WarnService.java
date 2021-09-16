@@ -3,6 +3,8 @@ package dev.shitzuu.client.warn;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import dev.shitzuu.client.database.DatabaseConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +30,8 @@ public class WarnService {
         try (Statement statement = databaseConnector.getConnection().createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `iclient_warnings` (`id` INT(11) PRIMARY KEY AUTO_INCREMENT, `identifier` INT(11), `punisher-snowflake` VARCHAR(64), `victim-snowflake` VARCHAR(64), `reason` VARCHAR(256) NOT NULL, `createdAt` MEDIUMTEXT);");
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Logger logger = LoggerFactory.getLogger(this.getClass());
+            logger.error("There was an unexpected incident while trying to initialize warnings table.", exception);
         }
     }
 
@@ -47,7 +50,8 @@ public class WarnService {
                     .setCreatedAt(resultSet.getLong("createdAt")));
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Logger logger = LoggerFactory.getLogger(this.getClass());
+            logger.error("There was an unexpected incident while trying to insert warning.", exception);
         }
         return warnings;
     }
@@ -87,7 +91,8 @@ public class WarnService {
             preparedStatement.setString(2, warning.getVictimSnowflake());
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Logger logger = LoggerFactory.getLogger(this.getClass());
+            logger.error("There was an unexpected incident while trying to remove warning.", exception);
         }
 
         return warning;
@@ -102,7 +107,8 @@ public class WarnService {
             preparedStatement.setLong(5, warn.getCreatedAt());
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Logger logger = LoggerFactory.getLogger(this.getClass());
+            logger.error("There was an unexpected incident while trying to save warning.", exception);
         }
     }
 

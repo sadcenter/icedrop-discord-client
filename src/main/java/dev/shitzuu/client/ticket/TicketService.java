@@ -16,6 +16,8 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.PermissionsBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,7 +45,8 @@ public class TicketService {
         try (Statement statement = databaseConnector.getConnection().createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `iclient_tickets` (`id` INT(11) PRIMARY KEY AUTO_INCREMENT, `creator-snowflake` VARCHAR(64), `channel-snowflake` VARCHAR(64), `createdAt` MEDIUMTEXT);");
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Logger logger = LoggerFactory.getLogger(this.getClass());
+            logger.error("There was an unexpected incident while trying to initialize ticket's table.", exception);
         }
     }
 
@@ -95,7 +98,8 @@ public class TicketService {
                     preparedStatement.setLong(3, ticket.getCreatedAt());
                     preparedStatement.executeUpdate();
                 } catch (SQLException exception) {
-                    exception.printStackTrace();
+                    Logger logger = LoggerFactory.getLogger(this.getClass());
+                    logger.error("There was an unexpected incident while trying to insert ticket.", exception);
                 }
                 return Optional.of(ticket);
             });
@@ -119,7 +123,8 @@ public class TicketService {
             preparedStatement.setString(2, ticket.getChannelSnowflake());
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Logger logger = LoggerFactory.getLogger(this.getClass());
+            logger.error("There was an unexpected incident while trying to delete ticket.", exception);
         }
 
         ticketCache.invalidate(ticket.getChannelSnowflake());
@@ -145,7 +150,8 @@ public class TicketService {
                 }
                 return Optional.empty();
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                Logger logger = LoggerFactory.getLogger(this.getClass());
+                logger.error("There was an unexpected incident while trying to find ticket.", exception);
             }
             return Optional.empty();
         });
