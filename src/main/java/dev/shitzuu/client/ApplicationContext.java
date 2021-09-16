@@ -9,7 +9,9 @@ import dev.shitzuu.client.database.DatabaseConnector;
 import dev.shitzuu.client.listener.LoggingListener;
 import dev.shitzuu.client.listener.MessageAdvertiseListener;
 import dev.shitzuu.client.listener.MessageSwearListener;
+import dev.shitzuu.client.ticket.listener.TicketCreateListener;
 import dev.shitzuu.client.listener.internal.CommandExecutionListener;
+import dev.shitzuu.client.ticket.TicketService;
 import dev.shitzuu.client.warn.WarnService;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -50,6 +52,11 @@ public class ApplicationContext {
             censorService,
             warnService)));
         discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig, warnService));
+
+        TicketService ticketService = new TicketService(primaryConfig, databaseConnector);
+        ticketService.initialize();
+
+        discordApi.addMessageComponentCreateListener(new TicketCreateListener(ticketService));
 
         LoggingListener loggingListener = new LoggingListener(primaryConfig);
         discordApi.addServerMemberJoinListener(loggingListener);

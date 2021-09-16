@@ -24,6 +24,12 @@ public class PrimaryConfig extends OkaeriConfig {
     @Comment("This should be the snowflake of group, which will be added to user while he will be muted.")
     private String muteGroupSnowflake = "887358441495072828";
 
+    @Comment("This should be the snowflake of your server.")
+    private String serverSnowflake = "884175063774015519";
+
+    @Comment("This should be the snowflake of ticket's category.")
+    private String ticketCategorySnowflake = "888068014325501993";
+
     @Comment("This should be the list of domains, which should be mark as advertisement.")
     private List<String> advertisingDomains = Arrays.asList(
         "discord.com",
@@ -164,6 +170,9 @@ public class PrimaryConfig extends OkaeriConfig {
         }
     }
 
+    @Comment("[!] You shouldn't change this value manually, because it is changing automatically. ^_^")
+    private int ticketCount = 0;
+
     public String getToken() {
         return token;
     }
@@ -186,6 +195,22 @@ public class PrimaryConfig extends OkaeriConfig {
 
     public void setMuteGroupSnowflake(String muteGroupSnowflake) {
         this.muteGroupSnowflake = muteGroupSnowflake;
+    }
+
+    public String getServerSnowflake() {
+        return serverSnowflake;
+    }
+
+    public void setServerSnowflake(String serverSnowflake) {
+        this.serverSnowflake = serverSnowflake;
+    }
+
+    public String getTicketCategorySnowflake() {
+        return ticketCategorySnowflake;
+    }
+
+    public void setTicketCategorySnowflake(String ticketCategorySnowflake) {
+        this.ticketCategorySnowflake = ticketCategorySnowflake;
     }
 
     public List<String> getAdvertisingDomains() {
@@ -226,5 +251,13 @@ public class PrimaryConfig extends OkaeriConfig {
 
     public void setCensorConfig(CensorConfig censorConfig) {
         this.censorConfig = censorConfig;
+    }
+
+    public int getTicketCount() {
+        return ticketCount;
+    }
+
+    public void setTicketCount(int ticketCount) {
+        this.ticketCount = ticketCount;
     }
 }
