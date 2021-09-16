@@ -37,7 +37,7 @@ public class VerificationListener implements MessageComponentCreateListener {
         optionalRole.ifPresent(role -> server.addRoleToUser(interaction.getUser(), role)
             .thenAccept(state -> interaction.createImmediateResponder()
                 .addEmbed(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Verify")
+                    .setTitle("ICEDROP.EU - Weryfikacja")
                     .setDescription("Udało ci się zweryfikować, posiadasz teraz dostęp do wszystkich kanałów.")
                     .setFooter(interaction.getUser().getDiscriminatedName(), interaction.getUser().getAvatar()))
                 .setFlags(MessageFlag.EPHEMERAL)

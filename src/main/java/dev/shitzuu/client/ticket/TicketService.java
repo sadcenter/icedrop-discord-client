@@ -47,20 +47,22 @@ public class TicketService {
         }
     }
 
-    public CompletableFuture<Optional<ModifiableTicket>> createTicket(DiscordApi discordApi, User user) {
+    public void createTicket(DiscordApi discordApi, User user) {
         Optional<Server> optionalServer = discordApi.getServerById(primaryConfig.getServerSnowflake());
         if (optionalServer.isEmpty()) {
-            return CompletableFuture.supplyAsync(Optional::empty);
+            CompletableFuture.supplyAsync(Optional::empty);
+            return;
         }
 
         Server server = optionalServer.get();
 
         Optional<ChannelCategory> optionalChannelCategory = discordApi.getChannelCategoryById(primaryConfig.getTicketCategorySnowflake());
         if (optionalChannelCategory.isEmpty()) {
-            return CompletableFuture.supplyAsync(Optional::empty);
+            CompletableFuture.supplyAsync(Optional::empty);
+            return;
         }
 
-        return new ServerTextChannelBuilder(server)
+        new ServerTextChannelBuilder(server)
             .setName("ticket-" + user.getName())
             .addPermissionOverwrite(server.getEveryoneRole(), new PermissionsBuilder()
                 .setAllDenied()
@@ -78,7 +80,7 @@ public class TicketService {
                         .setDescription("Twój ticket został stworzony, możesz zadać swoje pytanie / opisać problem.")
                         .setFooter(user.getDiscriminatedName(), user.getAvatar()))
                     .addComponents(ActionRow.of(
-                        Button.danger("ticket-close", "Zamknij ticket.")
+                        Button.danger("ticket-close", "Zamknij ticket")
                     ))
                     .send(textChannel);
                 return ModifiableTicket.create()
