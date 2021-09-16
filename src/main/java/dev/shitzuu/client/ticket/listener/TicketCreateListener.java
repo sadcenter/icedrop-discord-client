@@ -28,7 +28,6 @@ public class TicketCreateListener implements MessageComponentCreateListener {
         }
 
         TextChannel textChannel = optionalChannel.get();
-
         switch (interaction.getCustomId()) {
             case "ticket-create": {
                 ticketService.getTicket(interaction.getUser().getIdAsString())
