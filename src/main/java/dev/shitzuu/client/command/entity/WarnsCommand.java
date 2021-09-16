@@ -63,7 +63,7 @@ public class WarnsCommand extends Command {
 
         int count = 0;
 
-        LinkedList<Warn> warnings = warnService.getAssociatedWarnings(user.getIdAsString());
+        LinkedList<Warn> warnings = new LinkedList<>(warnService.getAssociatedWarnings(user.getIdAsString()));
 
         Collections.reverse(warnings);
         for (Warn warn : warnings) {

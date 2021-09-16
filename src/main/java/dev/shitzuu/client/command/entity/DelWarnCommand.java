@@ -11,7 +11,6 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -61,9 +60,7 @@ public class DelWarnCommand extends Command {
             return;
         }
 
-        Collections.reverse(warnings);
-
-        Warn warn = warnings.removeFirst();
+        Warn warn = warnService.removeNewestWarning(user.getIdAsString());
 
         textChannel.sendMessage(EmbedFactory.produce()
             .setTitle("ICEDROP.EU - Delwarn")

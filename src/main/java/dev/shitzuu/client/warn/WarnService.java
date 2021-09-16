@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,6 +72,25 @@ public class WarnService {
         }
 
         warns.add(warn);
+    }
+
+    public Warn removeNewestWarning(String snowflake) {
+        LinkedList<Warn> warnings = new LinkedList<>(this.getAssociatedWarnings(snowflake));
+
+        Collections.reverse(warnings);
+
+        Warn warning = warnings.getFirst();
+
+        this.getAssociatedWarnings(snowflake).remove(warning);
+        try (PreparedStatement preparedStatement = databaseConnector.getConnection().prepareStatement("DELETE FROM `iclient_warnings` WHERE `identifier` = ? AND `victim-snowflake` = ?;")) {
+            preparedStatement.setInt(1, warning.getIdentifier());
+            preparedStatement.setString(2, warning.getVictimSnowflake());
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return warning;
     }
 
     public void saveWarning(Warn warn) {
