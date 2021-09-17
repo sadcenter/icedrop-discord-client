@@ -6,6 +6,7 @@ import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.PrimaryConfig.LoggerConfig;
 import dev.shitzuu.client.config.PrimaryConfig.PollConfig;
+import dev.shitzuu.client.giveaway.GiveawayService;
 import dev.shitzuu.client.warn.WarnService;
 
 import java.util.HashSet;
@@ -16,7 +17,7 @@ public class CommandService {
 
     private final Set<Command> commands;
 
-    public CommandService(PrimaryConfig primaryConfig, LoggerConfig loggerConfig, PollConfig pollConfig, CensorConfig censorConfig, CensorService censorService, WarnService warnService) {
+    public CommandService(PrimaryConfig primaryConfig, LoggerConfig loggerConfig, PollConfig pollConfig, CensorConfig censorConfig, CensorService censorService, WarnService warnService, GiveawayService giveawayService) {
         this.commands = new HashSet<>();
         this.commands.add(new HelpCommand(this));
         this.commands.add(new PingCommand());
@@ -32,6 +33,7 @@ public class CommandService {
         this.commands.add(new DelWarnCommand(warnService));
         this.commands.add(new MuteCommand(primaryConfig, loggerConfig));
         this.commands.add(new UnmuteCommand(primaryConfig, loggerConfig));
+        this.commands.add(new GiveawayCommand(giveawayService));
         if (censorConfig.isEnabled()) {
             this.commands.add(new AnalysisCommand(censorService));
         }

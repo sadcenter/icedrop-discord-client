@@ -33,6 +33,9 @@ public class PrimaryConfig extends OkaeriConfig {
     @Comment("This should be the snowflake of group, which will be added to user while he verified his self.")
     private String verifiedGroupSnowflake = "888098120871862362";
 
+    @Comment("This should be the snowflake of giveaway's channel.")
+    private String giveawayChannelSnowflake = "887779592423735316";
+
     @Comment("This should be the list of domains, which should be mark as advertisement.")
     private List<String> advertisingDomains = Arrays.asList(
         "discord.com",
@@ -222,6 +225,14 @@ public class PrimaryConfig extends OkaeriConfig {
 
     public void setVerifiedGroupSnowflake(String verifiedGroupSnowflake) {
         this.verifiedGroupSnowflake = verifiedGroupSnowflake;
+    }
+
+    public String getGiveawayChannelSnowflake() {
+        return giveawayChannelSnowflake;
+    }
+
+    public void setGiveawayChannelSnowflake(String giveawayChannelSnowflake) {
+        this.giveawayChannelSnowflake = giveawayChannelSnowflake;
     }
 
     public List<String> getAdvertisingDomains() {

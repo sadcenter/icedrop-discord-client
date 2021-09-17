@@ -6,6 +6,7 @@ import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.factory.ConfigFactory;
 import dev.shitzuu.client.database.DatabaseConnector;
+import dev.shitzuu.client.giveaway.GiveawayService;
 import dev.shitzuu.client.listener.LoggingListener;
 import dev.shitzuu.client.listener.MessageAdvertiseListener;
 import dev.shitzuu.client.listener.MessageSwearListener;
@@ -45,13 +46,17 @@ public class ApplicationContext {
             discordApi.addMessageCreateListener(new MessageSwearListener(censorService));
         }
 
+        GiveawayService giveawayService = new GiveawayService(primaryConfig, databaseConnector);
+        giveawayService.initialize(discordApi);
+
         discordApi.addMessageCreateListener(new CommandExecutionListener(new CommandService(
             primaryConfig,
             primaryConfig.getLoggerConfig(),
             primaryConfig.getPollConfig(),
             primaryConfig.getCensorConfig(),
             censorService,
-            warnService)));
+            warnService,
+            giveawayService)));
         discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig, warnService));
         discordApi.addMessageComponentCreateListener(new VerificationListener(primaryConfig));
 

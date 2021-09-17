@@ -2,5 +2,7 @@
 ./.idea/**
 
 ./target/
+./target/**
 
 config.hjson
+
