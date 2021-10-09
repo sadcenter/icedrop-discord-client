@@ -4,6 +4,7 @@ import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Header("############################################")
@@ -31,7 +32,7 @@ public class PrimaryConfig extends OkaeriConfig {
     private String ticketCategorySnowflake = "888068014325501993";
 
     @Comment("This should be the snowflake of group, which will be added to user while he verified his self.")
-    private String verifiedGroupSnowflake = "888098120871862362";
+    private List<String> verifiedGroupSnowflakes = Collections.singletonList("888098120871862362");
 
     @Comment("This should be the snowflake of giveaway's channel.")
     private String giveawayChannelSnowflake = "887779592423735316";
@@ -219,12 +220,12 @@ public class PrimaryConfig extends OkaeriConfig {
         this.ticketCategorySnowflake = ticketCategorySnowflake;
     }
 
-    public String getVerifiedGroupSnowflake() {
-        return verifiedGroupSnowflake;
+    public List<String> getVerifiedGroupSnowflakes() {
+        return verifiedGroupSnowflakes;
     }
 
-    public void setVerifiedGroupSnowflake(String verifiedGroupSnowflake) {
-        this.verifiedGroupSnowflake = verifiedGroupSnowflake;
+    public void setVerifiedGroupSnowflakes(List<String> verifiedGroupSnowflakes) {
+        this.verifiedGroupSnowflakes = verifiedGroupSnowflakes;
     }
 
     public String getGiveawayChannelSnowflake() {

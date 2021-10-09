@@ -9,7 +9,10 @@ import org.javacord.api.event.interaction.MessageComponentCreateEvent;
 import org.javacord.api.interaction.MessageComponentInteraction;
 import org.javacord.api.listener.interaction.MessageComponentCreateListener;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class VerificationListener implements MessageComponentCreateListener {
 
@@ -33,14 +36,22 @@ public class VerificationListener implements MessageComponentCreateListener {
 
         Server server = optionalServer.get();
 
-        Optional<Role> optionalRole = server.getRoleById(primaryConfig.getVerifiedGroupSnowflake());
-        optionalRole.ifPresent(role -> server.addRoleToUser(interaction.getUser(), role)
-            .thenAccept(state -> interaction.createImmediateResponder()
-                .addEmbed(EmbedFactory.produce()
-                    .setTitle("ICEDROP.EU - Weryfikacja")
-                    .setDescription("Udało ci się zweryfikować, posiadasz teraz dostęp do wszystkich kanałów.")
-                    .setFooter(interaction.getUser().getDiscriminatedName(), interaction.getUser().getAvatar()))
-                .setFlags(MessageFlag.EPHEMERAL)
-                .respond()));
+        List<Role> verifiedRoles = primaryConfig.getVerifiedGroupSnowflakes()
+            .stream()
+            .map(server::getRoleById)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toUnmodifiableList());
+        for (Role role : verifiedRoles) {
+            server.addRoleToUser(interaction.getUser(), role);
+        }
+
+        interaction.createImmediateResponder()
+            .addEmbed(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Weryfikacja")
+                .setDescription("Udało ci się zweryfikować, posiadasz teraz dostęp do wszystkich kanałów.")
+                .setFooter(interaction.getUser().getDiscriminatedName(), interaction.getUser().getAvatar()))
+            .setFlags(MessageFlag.EPHEMERAL)
+            .respond();
     }
 }
