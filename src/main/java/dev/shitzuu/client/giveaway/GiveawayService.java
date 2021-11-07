@@ -65,7 +65,7 @@ public class GiveawayService {
         }
 
         ScheduledExecutorService scheduledExecutorService = discordApi.getThreadPool().getScheduler();
-        scheduledExecutorService.scheduleAtFixedRate(new GiveawayScheduler(primaryConfig, this, discordApi), 1, 1, TimeUnit.MINUTES);
+        scheduledExecutorService.scheduleAtFixedRate(new GiveawayScheduler(primaryConfig, this, discordApi), 0, 1, TimeUnit.MINUTES);
     }
 
     public void createGiveaway(DiscordApi discordApi, String item, int count, long expireAfter) {

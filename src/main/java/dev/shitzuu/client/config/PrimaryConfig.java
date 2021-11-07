@@ -2,6 +2,7 @@ package dev.shitzuu.client.config;
 
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.*;
+import org.javacord.api.entity.activity.ActivityType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,6 +43,18 @@ public class PrimaryConfig extends OkaeriConfig {
         "discord.com",
         "discord.gg"
     );
+
+    @Comment("Custom discord status pool")
+    private List<String> statusPool = Arrays.asList(
+        "ICEDROP.eu",
+        "icedrop.eu"
+    );
+
+    @Comment("Discord status mode")
+    private ActivityType statusType = ActivityType.PLAYING;
+
+    @Comment("Discord status interval seconds")
+    private int statusSeconds = 20;
 
     @Comment("StorageConfig - this section contains values related with storage's configuration.")
     private StorageConfig storageConfig = new StorageConfig();
@@ -238,6 +251,30 @@ public class PrimaryConfig extends OkaeriConfig {
 
     public List<String> getAdvertisingDomains() {
         return advertisingDomains;
+    }
+
+    public List<String> getStatusPool() {
+        return statusPool;
+    }
+
+    public ActivityType getStatusType() {
+        return statusType;
+    }
+
+    public int getStatusSeconds() {
+        return statusSeconds;
+    }
+
+    public void setStatusPool(List<String> statusPool) {
+        this.statusPool = statusPool;
+    }
+
+    public void setStatusType(ActivityType statusType) {
+        this.statusType = statusType;
+    }
+
+    public void setStatusSeconds(int statusSeconds) {
+        this.statusSeconds = statusSeconds;
     }
 
     public void setAdvertisingDomains(List<String> advertisingDomains) {

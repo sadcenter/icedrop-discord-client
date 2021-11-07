@@ -22,7 +22,7 @@ public class MessageSwearListener implements MessageCreateListener {
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
         MessageAuthor messageAuthor = event.getMessageAuthor();
-        if (!(messageAuthor.isRegularUser())) {
+        if (messageAuthor.isBotUser() || messageAuthor.isServerAdmin()) {
             return;
         }
 

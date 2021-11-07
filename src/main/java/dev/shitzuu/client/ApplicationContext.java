@@ -7,16 +7,21 @@ import dev.shitzuu.client.config.PrimaryConfig.CensorConfig;
 import dev.shitzuu.client.config.factory.ConfigFactory;
 import dev.shitzuu.client.database.DatabaseConnector;
 import dev.shitzuu.client.giveaway.GiveawayService;
+import dev.shitzuu.client.giveaway.scheduler.GiveawayScheduler;
 import dev.shitzuu.client.listener.LoggingListener;
 import dev.shitzuu.client.listener.MessageAdvertiseListener;
 import dev.shitzuu.client.listener.MessageSwearListener;
 import dev.shitzuu.client.listener.VerificationListener;
+import dev.shitzuu.client.tasks.StatusScheduledTask;
 import dev.shitzuu.client.ticket.listener.TicketCreateListener;
 import dev.shitzuu.client.listener.internal.CommandExecutionListener;
 import dev.shitzuu.client.ticket.TicketService;
 import dev.shitzuu.client.warn.WarnService;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ApplicationContext {
 
@@ -49,6 +54,11 @@ public class ApplicationContext {
         GiveawayService giveawayService = new GiveawayService(primaryConfig, databaseConnector);
         giveawayService.initialize(discordApi);
 
+        ScheduledExecutorService scheduledExecutorService = discordApi.getThreadPool().getScheduler();
+        scheduledExecutorService.scheduleAtFixedRate(
+            new StatusScheduledTask(
+                discordApi, primaryConfig.getStatusPool(), primaryConfig.getStatusType()), 0, primaryConfig.getStatusSeconds(), TimeUnit.SECONDS);
+
         discordApi.addMessageCreateListener(new CommandExecutionListener(new CommandService(
             primaryConfig,
             primaryConfig.getLoggerConfig(),
@@ -57,6 +67,7 @@ public class ApplicationContext {
             censorService,
             warnService,
             giveawayService)));
+
         discordApi.addMessageCreateListener(new MessageAdvertiseListener(primaryConfig, warnService));
         discordApi.addMessageComponentCreateListener(new VerificationListener(primaryConfig));
 

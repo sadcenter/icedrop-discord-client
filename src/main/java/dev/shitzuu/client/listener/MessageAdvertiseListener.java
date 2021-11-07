@@ -21,15 +21,18 @@ public class MessageAdvertiseListener implements MessageCreateListener {
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
+        if(event.getMessageAuthor().isServerAdmin()) {
+            return;
+        }
+
         if (this.isAdvertisement(event.getMessageContent())) {
             TextChannel textChannel = event.getChannel();
-            textChannel.sendMessage(EmbedFactory.produce()
-                .setTitle("ICEDROP.EU - Warn")
-                .setDescription("Wiadomość wysłana przez <@" + event.getMessageAuthor().getId() + "> została usunięta, ponieważ posiadała reklame.")
-                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar()));
 
             Message message = event.getMessage();
-            message.delete();
+            message.delete().thenRun(() -> textChannel.sendMessage(EmbedFactory.produce()
+                .setTitle("ICEDROP.EU - Warn")
+                .setDescription("Wiadomość wysłana przez <@" + event.getMessageAuthor().getId() + "> została usunięta, ponieważ posiadała reklame.")
+                .setFooter(event.getMessageAuthor().getDiscriminatedName(), event.getMessageAuthor().getAvatar())));
 
             warnService.addWarning(ModifiableWarn.create()
                 .setIdentifier(warnService.getNextWarningIdentifier(event.getMessageAuthor().getIdAsString()))

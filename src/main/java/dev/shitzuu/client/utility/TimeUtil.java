@@ -4,6 +4,11 @@ import java.util.concurrent.TimeUnit;
 
 public final class TimeUtil {
 
+    /**
+     * @author Michal "RedInginier" Kaczmarek
+     */
+
+
     private TimeUtil() {
 
     }

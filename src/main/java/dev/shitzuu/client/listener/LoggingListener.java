@@ -3,10 +3,14 @@ package dev.shitzuu.client.listener;
 import dev.shitzuu.client.config.PrimaryConfig;
 import dev.shitzuu.client.factory.EmbedFactory;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.user.User;
+import org.javacord.api.event.Event;
 import org.javacord.api.event.server.member.ServerMemberJoinEvent;
 import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
+import org.javacord.api.listener.server.member.ServerMemberBanListener;
 import org.javacord.api.listener.server.member.ServerMemberJoinListener;
 import org.javacord.api.listener.server.member.ServerMemberLeaveListener;
+import org.javacord.api.listener.server.member.ServerMemberUnbanListener;
 
 import java.util.Optional;
 
@@ -43,4 +47,5 @@ public class LoggingListener implements ServerMemberJoinListener, ServerMemberLe
             .addField("Podmiot", "<@" + event.getUser().getId() + ">")
             .setFooter(event.getUser().getDiscriminatedName(), event.getUser().getAvatar())));
     }
+
 }
