@@ -1,2 +1,2 @@
 # icedrop-client
-There is nothing more which you should know there. 
+Icedrop discord bot which was bought from shitzuu and he was too lazy to fix the issues 
